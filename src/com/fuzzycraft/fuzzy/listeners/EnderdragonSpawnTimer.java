@@ -23,7 +23,7 @@ public class EnderdragonSpawnTimer implements Listener {
 	private String msg;
     
 	/**
-	 * Construtor. Creates an instance of EnderdragonChecker
+	 * Creates listener for EnderdragonSpawnTimer.
 	 * @param plugin
 	 * @param world
 	 */
@@ -49,12 +49,10 @@ public class EnderdragonSpawnTimer implements Listener {
 				@Override
 	            public void run() {
 					spawnWorld.spawn(location, EnderDragon.class);
-	                plugin.getServer().broadcastMessage(msg);
+	                plugin.getServer().broadcastMessage(ChatColor.DARK_RED + msg);
 	            }
 	 
 	        }.runTaskLater(this.plugin, this.time);
 	    }
-		Bukkit.getServer().broadcastMessage(ChatColor.DARK_RED + msg);
-
 	}
 }
