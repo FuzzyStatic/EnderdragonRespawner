@@ -1,6 +1,5 @@
 package com.fuzzycraft.fuzzy.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -12,6 +11,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.fuzzycraft.fuzzy.EnderdragonChecker;
 import com.fuzzycraft.fuzzy.EnderdragonRespawner;
+
+/**
+ * 
+ * @author FuzzyStatic (fuzzy@fuzzycraft.com)
+ *
+ */
 
 public class EnderdragonSpawnTimer implements Listener {
 
