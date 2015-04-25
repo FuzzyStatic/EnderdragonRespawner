@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -21,8 +22,7 @@ import com.fuzzycraft.fuzzy.EnderdragonRespawner;
 public class EnderdragonSpawnTimer implements Listener {
 
 	public EnderdragonRespawner plugin;
-	private EnderdragonChecker edc;
-	private World spawnWorld;
+	private World checkWorld, spawnWorld;
 	private Location location;
 	private int time;
 	private String msg;
@@ -34,7 +34,7 @@ public class EnderdragonSpawnTimer implements Listener {
 	 */
 	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, World checkWorld, World spawnWorld, Location location, int time, String msg) {
 		this.plugin = plugin;
-		edc = new EnderdragonChecker(checkWorld);
+		this.checkWorld = checkWorld;
 		this.spawnWorld = spawnWorld;
 		this.location = location;
 		this.time = time;
@@ -47,13 +47,15 @@ public class EnderdragonSpawnTimer implements Listener {
 	 */
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
+		EnderdragonChecker edc = new EnderdragonChecker(this.checkWorld);
+
 		if (event.getEntity() instanceof EnderDragon && !edc.exists()) {
 			// Create the task anonymously to spawn Enderdragon and schedule to run it once after specified time.
 	        new BukkitRunnable() {
 	        	
 				@Override
 	            public void run() {
-					spawnWorld.spawn(location, EnderDragon.class);
+					spawnWorld.spawnEntity(location, EntityType.ENDER_DRAGON);
 	                plugin.getServer().broadcastMessage(ChatColor.DARK_RED + msg);
 	            }
 	 
