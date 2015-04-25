@@ -15,7 +15,7 @@ public class EnderdragonChecker {
 	private World world;
 	
 	/**
-	 * Constructor
+	 * Insert which world to check for Enderdragon.
 	 * @param world
 	 */
 	public EnderdragonChecker (World world) {
@@ -23,7 +23,7 @@ public class EnderdragonChecker {
 	}
 	
 	/**
-	 * Check for entity Enderdragon in this.world
+	 * Check for entity Enderdragon in specified world.
 	 * @return
 	 */
 	public boolean exists() {
@@ -33,6 +33,14 @@ public class EnderdragonChecker {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Returns current world.
+	 * @return
+	 */
+	public World world() {
+		return this.world;
 	}
 	
 }
