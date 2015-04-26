@@ -1,10 +1,8 @@
 package com.fuzzycraft.fuzzy.listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -12,6 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.fuzzycraft.fuzzy.EnderdragonChecker;
 import com.fuzzycraft.fuzzy.EnderdragonRespawner;
+import com.fuzzycraft.fuzzy.EnderdragonSpawner;
 
 /**
  * 
@@ -24,21 +23,23 @@ public class EnderdragonSpawnTimer implements Listener {
 	public EnderdragonRespawner plugin;
 	private World checkWorld, spawnWorld;
 	private Location location;
-	private int time;
+	private int respawnTime;
 	private String msg;
-    
+	private EnderdragonChecker edc;
+
 	/**
-	 * Creates listener for EnderdragonSpawnTimer.
+	 * Constructs listener for EnderdragonSpawnTimer.
 	 * @param plugin
 	 * @param world
 	 */
-	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, World checkWorld, World spawnWorld, Location location, int time, String msg) {
+	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, World checkWorld, World spawnWorld, Location location, int respawnTime, String msg) {
 		this.plugin = plugin;
 		this.checkWorld = checkWorld;
 		this.spawnWorld = spawnWorld;
 		this.location = location;
-		this.time = time;
+		this.respawnTime = respawnTime;
 		this.msg = msg;
+		this.edc = new EnderdragonChecker(this.checkWorld);
 	}
 		
 	/**
@@ -47,19 +48,18 @@ public class EnderdragonSpawnTimer implements Listener {
 	 */
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
-		EnderdragonChecker edc = new EnderdragonChecker(this.checkWorld);
-
-		if (event.getEntity() instanceof EnderDragon && !edc.exists()) {
-			// Create the task anonymously to spawn Enderdragon and schedule to run it once after specified time.
-	        new BukkitRunnable() {
+		if(!(event.getEntity() instanceof EnderDragon) && this.edc.exists()) {
+			return;
+		}
+		
+		// Create the task anonymously to spawn Enderdragon and schedule to run it once after specified time.
+		new BukkitRunnable() {
 	        	
-				@Override
-	            public void run() {
-					spawnWorld.spawnEntity(location, EntityType.ENDER_DRAGON);
-	                plugin.getServer().broadcastMessage(ChatColor.DARK_RED + msg);
-	            }
-	 
-	        }.runTaskLater(this.plugin, this.time);
-	    }
+			@Override
+			public void run() {
+				new EnderdragonSpawner(plugin, spawnWorld, location, msg).spawnEnderdragon();
+			}
+			
+		}.runTaskLater(this.plugin, this.respawnTime);
 	}
 }
