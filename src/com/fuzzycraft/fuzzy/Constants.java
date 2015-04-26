@@ -1,5 +1,11 @@
 package com.fuzzycraft.fuzzy;
 
+/**
+ * 
+ * @author FuzzyStatic (fuzzy@fuzzycraft.com)
+ *
+ */
+
 public class Constants {
 	
 	public static final int TIME = 432000; // 6 hours of ticks: 20 ticks/seconds * 21600 seconds (6 hours)
