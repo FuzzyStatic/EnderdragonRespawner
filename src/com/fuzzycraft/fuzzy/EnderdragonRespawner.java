@@ -22,7 +22,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 	public void onEnable() {
 		World world = getServer().getWorld("world_the_end");
 		Location location = new Location(world, 0, 20, 0);
-		int time = 20; // 6 hours of ticks: 20 ticks/seconds * 21600 seconds (6 hours)
+		int time = 432000; // 6 hours of ticks: 20 ticks/seconds * 21600 seconds (6 hours)
 		String msg = "The beasts awakens from his slumber...";
 		ect = new EnderdragonSpawnTimer(this, world, world, location, time, msg);
 		
