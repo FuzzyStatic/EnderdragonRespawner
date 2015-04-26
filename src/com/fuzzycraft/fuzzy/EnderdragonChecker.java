@@ -18,7 +18,7 @@ public class EnderdragonChecker {
 	 * Insert which world to check for Enderdragon.
 	 * @param world
 	 */
-	public EnderdragonChecker (World world) {
+	public EnderdragonChecker(World world) {
 		this.world = world;
 	}
 	
