@@ -39,4 +39,28 @@ public class EnderdragonSpawner {
 		this.world.spawnEntity(this.location, EntityType.ENDER_DRAGON);
 		this.plugin.getServer().broadcastMessage(ChatColor.DARK_RED + this.msg);
 	}
+	
+	/**
+	 * Return current world.
+	 * @return
+	 */
+	public World world() {
+		return this.world;
+	}
+	
+	/**
+	 * Return current location.
+	 * @return
+	 */
+	public Location location() {
+		return this.location;
+	}
+	
+	/**
+	 * Return current message.
+	 * @return
+	 */
+	public String msg() {
+		return this.msg;
+	}
 }
