@@ -4,6 +4,8 @@ A minecraft plugin API (sans commands/configurations) that will respawn the Ende
 
 ## Releases
 
+[v1.1.2] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.1.2/EnderdragonRespawner.jar) - Parameter reduction
+
 [v1.1.1] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.1.1/EnderdragonRespawner.jar) - Logix fix / order of events fix
 
 [v1.1] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.1/EnderdragonRespawner.jar) - Portal Prevention
