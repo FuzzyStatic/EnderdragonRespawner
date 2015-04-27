@@ -16,27 +16,33 @@ import com.fuzzycraft.fuzzy.listeners.EnderdragonSpawnTimer;
 
 public class EnderdragonRespawner extends JavaPlugin {
 	
-	private EnderdragonSpawnTimer ect;
+	private EnderdragonSpawner es;
+	private EnderdragonChecker ec;
+	private EnderdragonSpawnTimer est;
 	private EnderdragonPreventPortal epp;
+	private World world;
+	private Location location;
 	
 	public void onEnable() {
-		World world = getServer().getWorld("world_the_end");
-		Location location = new Location(world, 0, 20, 0);
+		world = getServer().getWorld("world_the_end");
+		location = new Location(world, 0, 20, 0);
 				
+		// Create our object instances
+		es = new EnderdragonSpawner(this, world, location, Constants.MSG);
+		ec = new EnderdragonChecker(world);
+		
 		// Create listener instances
-		ect = new EnderdragonSpawnTimer(this, world, world, location, Constants.TIME_RESPAWN, Constants.MSG);
-		epp = new EnderdragonPreventPortal(this, world, Constants.CREATE_PORTAL, Constants.CREATE_EGG);
+		est = new EnderdragonSpawnTimer(this, es, ec, Constants.TIME_RESPAWN);
+		epp = new EnderdragonPreventPortal(this, ec.world(), Constants.CREATE_PORTAL, Constants.CREATE_EGG);
 
-		// Register Listeners
+		// Register listeners
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(ect, this);
+		pm.registerEvents(est, this);
 		pm.registerEvents(epp, this);
 		
-		// Checks for existence of Enderdragon in specified world on load. If Enderdragon does not exist, spawn dragon.
-		EnderdragonChecker edc = new EnderdragonChecker(world);
-		
-		if (!edc.exists()) {
-			new EnderdragonSpawner(this, world, location, Constants.MSG).spawnEnderdragon();
+		// Checks for existence of Enderdragon in specified world on load. If Enderdragon does not exist, spawn dragon.		
+		if (!ec.exists()) {
+			es.spawnEnderdragon();
 		}
 	}		
 }

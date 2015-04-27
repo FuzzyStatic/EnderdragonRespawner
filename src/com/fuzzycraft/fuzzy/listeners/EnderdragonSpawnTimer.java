@@ -1,7 +1,5 @@
 package com.fuzzycraft.fuzzy.listeners;
 
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,29 +20,22 @@ import com.fuzzycraft.fuzzy.EnderdragonSpawner;
 public class EnderdragonSpawnTimer implements Listener {
 
 	public EnderdragonRespawner plugin;
-	private World checkWorld, spawnWorld;
-	private Location location;
 	private int respawnTime;
-	private String msg;
+	private EnderdragonSpawner es;
 	private EnderdragonChecker edc;
 
 	/**
 	 * Constructs listener for EnderdragonSpawnTimer.
 	 * @param plugin
-	 * @param checkWorld
-	 * @param spawnWorld
-	 * @param location
+	 * @param es
+	 * @param edc
 	 * @param respawnTime
-	 * @param msg
 	 */
-	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, World checkWorld, World spawnWorld, Location location, int respawnTime, String msg) {
+	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, EnderdragonSpawner es, EnderdragonChecker edc, int respawnTime) {
 		this.plugin = plugin;
-		this.checkWorld = checkWorld;
-		this.spawnWorld = spawnWorld;
-		this.location = location;
+		this.es = es;
+		this.edc = edc;
 		this.respawnTime = respawnTime;
-		this.msg = msg;
-		this.edc = new EnderdragonChecker(this.checkWorld);
 	}
 		
 	/**
@@ -62,7 +53,7 @@ public class EnderdragonSpawnTimer implements Listener {
 	        	
 			@Override
 			public void run() {
-				new EnderdragonSpawner(plugin, spawnWorld, location, msg).spawnEnderdragon();
+				es.spawnEnderdragon();
 			}
 			
 		}.runTaskLater(this.plugin, this.respawnTime);
