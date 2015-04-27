@@ -1,12 +1,19 @@
 package com.fuzzycraft.fuzzy.listeners;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCreatePortalEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.fuzzycraft.fuzzy.EnderdragonRespawner;
 
@@ -19,7 +26,7 @@ import com.fuzzycraft.fuzzy.EnderdragonRespawner;
 public class EnderdragonPreventPortal implements Listener {
 
 	public EnderdragonRespawner plugin;
-	private World checkWorld;
+	private World world;
 	private boolean createPortal, createEgg;
 
 	/**
@@ -27,9 +34,9 @@ public class EnderdragonPreventPortal implements Listener {
 	 * @param plugin
 	 * @param world
 	 */
-	public EnderdragonPreventPortal(EnderdragonRespawner plugin, World checkWorld, boolean createPortal, boolean createEgg) {
+	public EnderdragonPreventPortal(EnderdragonRespawner plugin, World world, boolean createPortal, boolean createEgg) {
 		this.plugin = plugin;
-		this.checkWorld = checkWorld;
+		this.world = world;
 		this.createPortal = createPortal;
 		this.createEgg = createEgg;
 	}
@@ -38,24 +45,37 @@ public class EnderdragonPreventPortal implements Listener {
 	 * Checks for portal creation by an Enderdragon in specified world. Removes portal blocks if specified.
 	 * @param event
 	 */
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntityCreatePortal(EntityCreatePortalEvent event) {
-		if(!(event.getEntity() instanceof EnderDragon) && !(event.getEntity().getWorld() == this.checkWorld) && this.createPortal) {
+		// Cancel current event
+		event.setCancelled(true);
+		
+		Entity entity = event.getEntity();
+		
+		if(!(entity instanceof EnderDragon) && !(entity.getWorld() == this.world) && this.createPortal) {
 			return;
 		}
+		
+		List<BlockState> blocks = new ArrayList<BlockState>(event.getBlocks());
 
 		for (BlockState block : event.getBlocks()) {
 			// Remove any bedrock or ender portal blocks.
 			if (block.getType() == Material.BEDROCK || block.getType() == Material.ENDER_PORTAL) {
-				event.getBlocks().remove(block);
+				blocks.remove(block);
 			}
-			
-			// Remove Enderdragon egg if specified.
-			if(!createEgg) {
-				if (block.getType() == Material.DRAGON_EGG) {
-					event.getBlocks().remove(block);
+
+			// Remove Enderdragon egg.
+			if (block.getType() == Material.DRAGON_EGG) {
+				blocks.remove(block);
+				
+				// Drop egg
+				if (createEgg) {
+					entity.getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.DRAGON_EGG));
 				}
-			}		
+			}
 		}
+		
+		// Create new event with whatever blocks are left
+		plugin.getServer().getPluginManager().callEvent(new EntityCreatePortalEvent((LivingEntity) entity, blocks, event.getPortalType()));
 	}
 }
