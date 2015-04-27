@@ -36,7 +36,7 @@ public class EnderdragonChecker {
 	}
 	
 	/**
-	 * Returns current world.
+	 * Return current world.
 	 * @return
 	 */
 	public World world() {
