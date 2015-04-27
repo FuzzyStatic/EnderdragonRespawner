@@ -53,7 +53,7 @@ public class EnderdragonSpawnTimer implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntityDeath(EntityDeathEvent event) {
-		if(!(event.getEntity() instanceof EnderDragon) && this.edc.exists()) {
+		if(!(event.getEntity() instanceof EnderDragon) || this.edc.exists()) {
 			return;
 		}
 		

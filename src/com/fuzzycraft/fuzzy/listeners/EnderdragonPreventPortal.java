@@ -48,15 +48,15 @@ public class EnderdragonPreventPortal implements Listener {
 	 * @param event
 	 */
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onEntityCreatePortal(EntityCreatePortalEvent event) {
-		// Cancel current event
-		event.setCancelled(true);
-		
+	public void onEntityCreatePortal(EntityCreatePortalEvent event) {		
 		Entity entity = event.getEntity();
 		
-		if(!(entity instanceof EnderDragon) && !(entity.getWorld() == this.world) && this.createPortal) {
+		if(!(entity instanceof EnderDragon) || !(entity.getWorld() == this.world) || this.createPortal) {
 			return;
 		}
+		
+		// Cancel current event
+		event.setCancelled(true);
 		
 		List<BlockState> blocks = new ArrayList<BlockState>(event.getBlocks());
 
