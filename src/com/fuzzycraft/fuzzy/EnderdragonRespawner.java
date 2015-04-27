@@ -24,8 +24,8 @@ public class EnderdragonRespawner extends JavaPlugin {
 	private Location location;
 	
 	public void onEnable() {
-		world = getServer().getWorld("world_the_end");
-		location = new Location(world, 0, 20, 0);
+		world = getServer().getWorld(Constants.WORLD);
+		location = new Location(world, Constants.X, Constants.Y, Constants.Z);
 				
 		// Create our object instances
 		es = new EnderdragonSpawner(this, world, location, Constants.MSG);
