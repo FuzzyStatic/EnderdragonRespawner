@@ -69,13 +69,13 @@ public class EnderdragonPreventPortal implements Listener {
 				blocks.remove(block);
 				
 				// Drop egg
-				if (createEgg) {
+				if (this.createEgg) {
 					entity.getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.DRAGON_EGG));
 				}
 			}
 		}
 		
 		// Create new event with whatever blocks are left
-		plugin.getServer().getPluginManager().callEvent(new EntityCreatePortalEvent((LivingEntity) entity, blocks, event.getPortalType()));
+		this.plugin.getServer().getPluginManager().callEvent(new EntityCreatePortalEvent((LivingEntity) entity, blocks, event.getPortalType()));
 	}
 }
