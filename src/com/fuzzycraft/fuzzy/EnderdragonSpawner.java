@@ -20,7 +20,10 @@ public class EnderdragonSpawner {
 	
 	/**
 	 * Insert which world and location to spawn Enderdragon and which message to produce.
+	 * @param plugin
 	 * @param world
+	 * @param location
+	 * @param msg
 	 */
 	public EnderdragonSpawner(EnderdragonRespawner plugin, World world, Location location, String msg) {
 		this.plugin = plugin;
@@ -29,6 +32,9 @@ public class EnderdragonSpawner {
 		this.msg = msg;
 	}
 	
+	/**
+	 * Spawn Enderdragon and broadcast message.
+	 */
 	public void spawnEnderdragon() {
 		this.world.spawnEntity(this.location, EntityType.ENDER_DRAGON);
 		this.plugin.getServer().broadcastMessage(ChatColor.DARK_RED + this.msg);

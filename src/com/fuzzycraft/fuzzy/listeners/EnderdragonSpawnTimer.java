@@ -31,7 +31,11 @@ public class EnderdragonSpawnTimer implements Listener {
 	/**
 	 * Constructs listener for EnderdragonSpawnTimer.
 	 * @param plugin
-	 * @param world
+	 * @param checkWorld
+	 * @param spawnWorld
+	 * @param location
+	 * @param respawnTime
+	 * @param msg
 	 */
 	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, World checkWorld, World spawnWorld, Location location, int respawnTime, String msg) {
 		this.plugin = plugin;

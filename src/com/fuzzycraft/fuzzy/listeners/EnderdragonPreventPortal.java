@@ -33,6 +33,8 @@ public class EnderdragonPreventPortal implements Listener {
 	 * Constructs listener for EnderdragonPreventPortal.
 	 * @param plugin
 	 * @param world
+	 * @param createPortal
+	 * @param createEgg
 	 */
 	public EnderdragonPreventPortal(EnderdragonRespawner plugin, World world, boolean createPortal, boolean createEgg) {
 		this.plugin = plugin;
