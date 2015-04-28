@@ -55,9 +55,6 @@ public class EnderdragonPreventPortal implements Listener {
 			return;
 		}
 		
-		// Cancel current event
-		event.setCancelled(true);
-		
 		List<BlockState> blocks = new ArrayList<BlockState>(event.getBlocks());
 
 		for (BlockState block : event.getBlocks()) {
@@ -76,6 +73,9 @@ public class EnderdragonPreventPortal implements Listener {
 				}
 			}
 		}
+		
+		// Cancel current event
+		event.setCancelled(true);
 		
 		// Create new event with whatever blocks are left
 		this.plugin.getServer().getPluginManager().callEvent(new EntityCreatePortalEvent((LivingEntity) entity, blocks, event.getPortalType()));
