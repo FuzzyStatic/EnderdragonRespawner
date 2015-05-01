@@ -1,4 +1,4 @@
-package com.fuzzycraft.fuzzy;
+package com.fuzzycraft.fuzzy.utilities;
 
 /**
  * 
