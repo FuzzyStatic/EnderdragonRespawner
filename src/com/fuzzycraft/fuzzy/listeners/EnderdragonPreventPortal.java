@@ -47,7 +47,7 @@ public class EnderdragonPreventPortal implements Listener {
 	 * Checks for portal creation by an Enderdragon in specified world. Removes portal blocks if specified.
 	 * @param event
 	 */
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
 	public void onEntityCreatePortal(EntityCreatePortalEvent event) {		
 		Entity entity = event.getEntity();
 		
@@ -74,10 +74,12 @@ public class EnderdragonPreventPortal implements Listener {
 			}
 		}
 		
-		// Cancel current event
-		event.setCancelled(true);
+		if (blocks.size() != event.getBlocks().size()) {
+			// Cancel current event
+			event.setCancelled(true);
 		
-		// Create new event with whatever blocks are left
-		this.plugin.getServer().getPluginManager().callEvent(new EntityCreatePortalEvent((LivingEntity) entity, blocks, event.getPortalType()));
+			// Create new event with whatever blocks are left
+			this.plugin.getServer().getPluginManager().callEvent(new EntityCreatePortalEvent((LivingEntity) entity, blocks, event.getPortalType()));
+		}
 	}
 }
