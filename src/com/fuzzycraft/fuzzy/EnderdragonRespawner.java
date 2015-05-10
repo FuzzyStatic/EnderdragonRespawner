@@ -22,8 +22,6 @@ public class EnderdragonRespawner extends JavaPlugin {
 	
 	private EnderdragonSpawner es;
 	private EnderdragonChecker ec;
-	private EnderdragonSpawnTimer est;
-	private EnderdragonPreventPortal epp;
 	private World world;
 	private Location location;
 	
@@ -31,15 +29,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 		world = getServer().getWorld(Defaults.WORLD);
 		location = new Location(world, Defaults.X, Defaults.Y, Defaults.Z);
 		 
-		// Configuration setup.
-		getDataFolder().mkdir();
-		getConfig().addDefault(Paths.LOCATION, new SerializableLocation(location).serialize());
-		getConfig().addDefault(Paths.TIME, Defaults.TIME);
-		getConfig().addDefault(Paths.MSG, Defaults.MSG);
-		getConfig().addDefault(Paths.CREATE_PORTAL, Defaults.CREATE_PORTAL);
-		getConfig().addDefault(Paths.CREATE_EGG, Defaults.CREATE_EGG);
-		getConfig().options().copyDefaults(true);
-		saveConfig();
+		configDefaults();
 		
 		// Get location from configuration.
 		SerializableLocation sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
@@ -48,18 +38,28 @@ public class EnderdragonRespawner extends JavaPlugin {
 		es = new EnderdragonSpawner(this, world, sc.getLocation(), getConfig().getString(Paths.MSG));
 		ec = new EnderdragonChecker(world);
 		
-		// Create listener instances.
-		est = new EnderdragonSpawnTimer(this, es, ec, getConfig().getInt(Paths.TIME));
-		epp = new EnderdragonPreventPortal(this, ec.world(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG));
-
-		// Register listeners.
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(est, this);
-		pm.registerEvents(epp, this);
+		registerListeners();
 		
 		// Checks for existence of Enderdragon in specified world on load. If Enderdragon does not exist, spawn dragon.		
 		if (!ec.exists()) {
 			es.spawnEnderdragon();
 		}
-	}		
+	}
+	
+	public void registerListeners() {
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(new EnderdragonSpawnTimer(this, es, ec, getConfig().getInt(Paths.TIME)), this);
+		pm.registerEvents(new EnderdragonPreventPortal(this, ec.world(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
+	}
+	
+	public void configDefaults() {
+		getDataFolder().mkdir();
+		getConfig().addDefault(Paths.LOCATION, new SerializableLocation(location).serialize());
+		getConfig().addDefault(Paths.TIME, Defaults.TIME);
+		getConfig().addDefault(Paths.MSG, Defaults.MSG);
+		getConfig().addDefault(Paths.CREATE_PORTAL, Defaults.CREATE_PORTAL);
+		getConfig().addDefault(Paths.CREATE_EGG, Defaults.CREATE_EGG);
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+	}
 }
