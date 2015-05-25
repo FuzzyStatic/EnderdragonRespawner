@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fuzzycraft.fuzzy.constants.Defaults;
 import com.fuzzycraft.fuzzy.constants.Paths;
+import com.fuzzycraft.fuzzy.listeners.EnderdragonCrystals;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonPreventPortal;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonSpawnTimer;
 import com.fuzzycraft.fuzzy.utilities.SerializableLocation;
@@ -26,17 +27,16 @@ public class EnderdragonRespawner extends JavaPlugin {
 	private Location location;
 	
 	public void onEnable() {
-		world = getServer().getWorld(Defaults.WORLD);
-		location = new Location(world, Defaults.X, Defaults.Y, Defaults.Z);
+		this.world = getServer().getWorld(Defaults.WORLD);
+		this.location = new Location(world, Defaults.X, Defaults.Y, Defaults.Z);
 		 
 		configDefaults();
 		
 		// Get location from configuration.
 		SerializableLocation sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
 		
-		// Create our object instances.
-		es = new EnderdragonSpawner(this, world, sc.getLocation(), getConfig().getString(Paths.MSG));
-		ec = new EnderdragonChecker(world);
+		es = new EnderdragonSpawner(this, this.world, sc.getLocation(), getConfig().getString(Paths.MSG));
+		ec = new EnderdragonChecker(this.world);
 		
 		registerListeners();
 		
@@ -50,6 +50,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new EnderdragonSpawnTimer(this, es, ec, getConfig().getInt(Paths.TIME)), this);
 		pm.registerEvents(new EnderdragonPreventPortal(this, ec.world(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
+		pm.registerEvents(new EnderdragonCrystals(this, ec.world()), this);
 	}
 	
 	public void configDefaults() {
