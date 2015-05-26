@@ -28,13 +28,13 @@ public class EnderdragonSpawnTimer implements Listener {
 	 * Constructs listener for EnderdragonSpawnTimer.
 	 * @param plugin
 	 * @param es
-	 * @param edc
+	 * @param ec
 	 * @param respawnTime
 	 */
-	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, EnderdragonSpawner es, EnderdragonChecker edc, int respawnTime) {
+	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, EnderdragonSpawner es, EnderdragonChecker ec, EnderdragonCrystals ecl, int respawnTime) {
 		this.plugin = plugin;
 		this.es = es;
-		this.edc = edc;
+		this.edc = ec;
 		this.respawnTime = respawnTime;
 	}
 		

@@ -48,9 +48,11 @@ public class EnderdragonRespawner extends JavaPlugin {
 	
 	public void registerListeners() {
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(new EnderdragonSpawnTimer(this, es, ec, getConfig().getInt(Paths.TIME)), this);
+		EnderdragonCrystals ecl = new EnderdragonCrystals(this, ec.world());
+		pm.registerEvents(ecl, this);
+		pm.registerEvents(new EnderdragonSpawnTimer(this, es, ec, ecl, getConfig().getInt(Paths.TIME)), this);
 		pm.registerEvents(new EnderdragonPreventPortal(this, ec.world(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
-		pm.registerEvents(new EnderdragonCrystals(this, ec.world()), this);
+		
 	}
 	
 	public void configDefaults() {

@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.fuzzycraft.fuzzy.EnderdragonRespawner;
 
@@ -22,11 +21,9 @@ public class EnderdragonCrystals implements Listener {
 	private List<Location> list = new ArrayList<Location>();
 	
 	/**
-	 * Insert which world and location to spawn Enderdragon and which message to produce.
+	 * Insert which world to check for EnderCrystals.
 	 * @param plugin
 	 * @param world
-	 * @param location
-	 * @param msg
 	 */
 	public EnderdragonCrystals(EnderdragonRespawner plugin, World world) {
 		this.plugin = plugin;
@@ -34,7 +31,7 @@ public class EnderdragonCrystals implements Listener {
 	}
 	
 	/**
-	 * Checks for death of Enderdragon crystal in specified world.
+	 * Checks for damage to EnderCrystals in specified world.
 	 * @param event
 	 */
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -43,7 +40,6 @@ public class EnderdragonCrystals implements Listener {
 		
 		if(entity instanceof EnderCrystal) {
 			list.add(entity.getLocation());
-			System.out.println("true");
 		}
 	}
 	
