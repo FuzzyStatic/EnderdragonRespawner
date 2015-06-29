@@ -23,6 +23,7 @@ public class EnderdragonSpawnTimer implements Listener {
 	private int respawnTime;
 	private EnderdragonSpawner es;
 	private EnderdragonChecker edc;
+	private EnderdragonCrystals ecl;
 
 	/**
 	 * Constructs listener for EnderdragonSpawnTimer.
@@ -35,6 +36,7 @@ public class EnderdragonSpawnTimer implements Listener {
 		this.plugin = plugin;
 		this.es = es;
 		this.edc = ec;
+		this.ecl = ecl;
 		this.respawnTime = respawnTime;
 	}
 		
@@ -47,6 +49,8 @@ public class EnderdragonSpawnTimer implements Listener {
 		if(!(event.getEntity() instanceof EnderDragon) || this.edc.exists()) {
 			return;
 		}
+		
+		System.out.println(this.ecl.getCrystalLocations());
 		
 		// Create the task anonymously to spawn Enderdragon and schedule to run it once after specified time.
 		new BukkitRunnable() {

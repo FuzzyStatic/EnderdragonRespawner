@@ -44,7 +44,7 @@ public class EnderdragonCrystals implements Listener {
 	}
 	
 	/**
-	 * 
+	 * Return crystal locations.
 	 * @return
 	 */
 	public List<Location> getCrystalLocations() {
