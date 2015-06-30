@@ -1,7 +1,7 @@
 <project>
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.fuzzycraft.fuzzy</groupId>
-    <artifactId>EnderdragonRespawner</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>localdomain.localhost.tutorial</groupId>
+	<artifactId>java-archive</artifactId>
     <packaging>jar</packaging>
     <version>1.3</version>
 	<repositories>
