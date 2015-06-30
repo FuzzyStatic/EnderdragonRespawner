@@ -1,0 +1,22 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mycompany.app</groupId>
+    <artifactId>my-module</artifactId>
+    <version>1</version>
+    <repository>
+        <id>spigot-repo</id>
+        <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+    </repository>
+    <!--Spigot-API-->
+	<dependency>
+		   <groupId>org.spigotmc</groupId>
+		   <artifactId>spigot-api</artifactId>
+		   <version>1.8.7-R0.1-SNAPSHOT</version>
+	</dependency>
+	<!--Bukkit API-->
+	<dependency>
+	    <groupId>org.bukkit</groupId>
+	    <artifactId>bukkit</artifactId>
+	    <version>1.8.7-R0.1-SNAPSHOT</version>
+	</dependency>
+</project>
