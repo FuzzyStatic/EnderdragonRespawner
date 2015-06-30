@@ -26,6 +26,6 @@
     </dependencies>
     <build>
         <finalName>EnderdragonRespawner</finalName>
-        <directory>src/com/fuzzycraft/fuzzy</directory>
+        <sourceDirectory>src/com/fuzzycraft/fuzzy</sourceDirectory>
     </build>
 </project>
