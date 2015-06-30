@@ -23,4 +23,7 @@
     	    <version>1.8.7-R0.1-SNAPSHOT</version>
     	</dependency>
     </dependencies>
+    <build>
+        <finalName>EnderdragonRespawner</finalName>
+    </build>
 </project>
