@@ -61,6 +61,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 		getConfig().addDefault(Paths.AMOUNT, Defaults.AMOUNT);
 		getConfig().addDefault(Paths.TIME, Defaults.TIME);
 		getConfig().addDefault(Paths.MSG, Defaults.MSG);
+		getConfig().addDefault(Paths.RESPAWN_CRYSTALS, Defaults.RESPAWN_CRYSTALS);
 		getConfig().addDefault(Paths.CREATE_PORTAL, Defaults.CREATE_PORTAL);
 		getConfig().addDefault(Paths.CREATE_EGG, Defaults.CREATE_EGG);
 		getConfig().options().copyDefaults(true);
