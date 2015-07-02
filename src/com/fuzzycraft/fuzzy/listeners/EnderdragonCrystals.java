@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -40,6 +43,19 @@ public class EnderdragonCrystals implements Listener {
 		
 		if(entity instanceof EnderCrystal) {
 			list.add(entity.getLocation());
+		}
+	}
+	
+	/**
+	 * Respawn destroyed crystals.
+	 */
+	public void respawnCrystals() {
+		if (this.list != null) {
+			for (Location loc : this.list) {
+				Block block = loc.getBlock();
+	            block.setType(Material.AIR);
+				this.world.spawnEntity(loc, EntityType.ENDER_CRYSTAL);
+			}
 		}
 	}
 	

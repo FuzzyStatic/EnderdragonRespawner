@@ -50,15 +50,12 @@ public class EnderdragonSpawnTimer implements Listener {
 			return;
 		}
 		
-		//Testing
-		System.out.println(this.ecl.getCrystalLocations());
-		System.out.println(this.ecl.world());
-		
 		// Create the task anonymously to spawn Enderdragon and schedule to run it once after specified time.
 		new BukkitRunnable() {
 	        	
 			@Override
 			public void run() {
+				ecl.respawnCrystals();
 				es.spawnEnderdragon();
 			}
 			
