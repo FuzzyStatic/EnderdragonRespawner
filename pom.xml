@@ -27,5 +27,13 @@
     <build>
         <finalName>EnderdragonRespawner</finalName>
         <sourceDirectory>src/com/fuzzycraft/fuzzy</sourceDirectory>
+        <resources>
+	        <resource>
+	            <directory>src</directory>
+	            <includes>
+	                <include>*.yml</include>
+	            </includes>
+	        </resource>
+        </resources>
     </build>
 </project>
