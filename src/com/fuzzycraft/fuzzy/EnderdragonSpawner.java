@@ -16,6 +16,7 @@ public class EnderdragonSpawner {
 	public EnderdragonRespawner plugin;
 	private World world;
 	private Location location;
+	private int amount;
 	private String msg;
 	
 	/**
@@ -25,10 +26,11 @@ public class EnderdragonSpawner {
 	 * @param location
 	 * @param msg
 	 */
-	public EnderdragonSpawner(EnderdragonRespawner plugin, World world, Location location, String msg) {
+	public EnderdragonSpawner(EnderdragonRespawner plugin, World world, Location location, int amount, String msg) {
 		this.plugin = plugin;
 		this.world = world;
 		this.location = location;
+		this.amount = amount;
 		this.msg = msg;
 	}
 	
@@ -36,7 +38,10 @@ public class EnderdragonSpawner {
 	 * Spawn Enderdragon and broadcast message.
 	 */
 	public void spawnEnderdragon() {
-		this.world.spawnEntity(this.location, EntityType.ENDER_DRAGON);
+		for (int i=0; i<amount; i++) {
+			this.world.spawnEntity(this.location, EntityType.ENDER_DRAGON);
+		}
+		
 		this.plugin.getServer().broadcastMessage(ChatColor.DARK_RED + this.msg);
 	}
 	
@@ -54,6 +59,14 @@ public class EnderdragonSpawner {
 	 */
 	public Location location() {
 		return this.location;
+	}
+	
+	/**
+	 * Return current amount.
+	 * @return
+	 */
+	public int amount() {
+		return this.amount;
 	}
 	
 	/**

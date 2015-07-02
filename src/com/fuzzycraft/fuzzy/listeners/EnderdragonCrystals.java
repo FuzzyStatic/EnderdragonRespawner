@@ -22,15 +22,17 @@ public class EnderdragonCrystals implements Listener {
 	public EnderdragonRespawner plugin;
 	private World world;
 	private List<Location> list = new ArrayList<Location>();
+	private boolean respawn;
 	
 	/**
 	 * Insert which world to check for EnderCrystals.
 	 * @param plugin
 	 * @param world
 	 */
-	public EnderdragonCrystals(EnderdragonRespawner plugin, World world) {
+	public EnderdragonCrystals(EnderdragonRespawner plugin, World world, boolean respawn) {
 		this.plugin = plugin;
 		this.world = world;
+		this.respawn = respawn;
 	}
 	
 	/**
@@ -50,7 +52,7 @@ public class EnderdragonCrystals implements Listener {
 	 * Respawn destroyed crystals.
 	 */
 	public void respawnCrystals() {
-		if (this.list != null) {
+		if (this.list != null && this.respawn) {
 			for (Location loc : this.list) {
 				Block block = loc.getBlock();
 	            block.setType(Material.AIR);

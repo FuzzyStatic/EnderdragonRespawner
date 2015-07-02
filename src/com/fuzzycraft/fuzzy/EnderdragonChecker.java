@@ -15,7 +15,7 @@ public class EnderdragonChecker {
 	private World world;
 	
 	/**
-	 * Insert which world to check for Enderdragon.
+	 * Insert which world to check for Enderdragons.
 	 * @param world
 	 */
 	public EnderdragonChecker(World world) {
@@ -23,7 +23,7 @@ public class EnderdragonChecker {
 	}
 	
 	/**
-	 * Check for entity Enderdragon in specified world.
+	 * Check for entity Enderdragons in specified world.
 	 * @return
 	 */
 	public boolean exists() {

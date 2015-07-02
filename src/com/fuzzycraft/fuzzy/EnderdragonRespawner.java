@@ -35,12 +35,12 @@ public class EnderdragonRespawner extends JavaPlugin {
 		// Get location from configuration.
 		SerializableLocation sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
 		
-		es = new EnderdragonSpawner(this, this.world, sc.getLocation(), getConfig().getString(Paths.MSG));
+		es = new EnderdragonSpawner(this, this.world, sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
 		ec = new EnderdragonChecker(this.world);
 		
 		registerListeners();
 		
-		// Checks for existence of Enderdragon in specified world on load. If Enderdragon does not exist, spawn dragon.		
+		// Checks for existence of Enderdragon(s) in specified world on load. If Enderdragon(s) do not exist, spawn dragon.		
 		if (!ec.exists()) {
 			es.spawnEnderdragon();
 		}
@@ -48,7 +48,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 	
 	public void registerListeners() {
 		PluginManager pm = getServer().getPluginManager();
-		EnderdragonCrystals ecl = new EnderdragonCrystals(this, ec.world());
+		EnderdragonCrystals ecl = new EnderdragonCrystals(this, ec.world(), getConfig().getBoolean(Paths.RESPAWN_CRYSTALS));
 		pm.registerEvents(ecl, this);
 		pm.registerEvents(new EnderdragonSpawnTimer(this, es, ec, ecl, getConfig().getInt(Paths.TIME)), this);
 		pm.registerEvents(new EnderdragonPreventPortal(this, ec.world(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
@@ -58,6 +58,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 	public void configDefaults() {
 		getDataFolder().mkdir();
 		getConfig().addDefault(Paths.LOCATION, new SerializableLocation(location).serialize());
+		getConfig().addDefault(Paths.AMOUNT, Defaults.AMOUNT);
 		getConfig().addDefault(Paths.TIME, Defaults.TIME);
 		getConfig().addDefault(Paths.MSG, Defaults.MSG);
 		getConfig().addDefault(Paths.CREATE_PORTAL, Defaults.CREATE_PORTAL);
