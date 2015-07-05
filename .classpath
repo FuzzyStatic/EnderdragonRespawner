@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry excluding="src/|lib/" kind="src" path=""/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/craftbukkit-1.8.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/craftbukkit-1.8.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

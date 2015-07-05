@@ -38,7 +38,7 @@ public class EnderdragonSpawner {
 	 * Spawn Enderdragon and broadcast message.
 	 */
 	public void spawnEnderdragon() {
-		for (int i=0; i<amount; i++) {
+		for (int i=0; i<this.amount; i++) {
 			this.world.spawnEntity(this.location, EntityType.ENDER_DRAGON);
 		}
 		

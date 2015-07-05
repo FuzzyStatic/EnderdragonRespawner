@@ -23,7 +23,7 @@ public class EnderdragonChecker {
 	}
 	
 	/**
-	 * Check for entity Enderdragons in specified world.
+	 * Check for entity Enderdragons1 in specified world.
 	 * @return
 	 */
 	public boolean exists() {
