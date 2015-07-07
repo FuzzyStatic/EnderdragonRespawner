@@ -50,7 +50,7 @@ public class EnderdragonSpawnTimer implements Listener {
 			return;
 		}
 		
-		//Respawn Ender Crystals now just in case of server shutdown
+		// Respawn Ender Crystals now just in case of server shutdown.
 		this.ecl.respawnCrystals();
 		
 		// Create the task anonymously to spawn Enderdragon and schedule to run it once after specified time.
