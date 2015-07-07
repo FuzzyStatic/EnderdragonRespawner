@@ -52,7 +52,7 @@ public class SerializableLocation implements ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("world", this.location.getWorld().getName().toString());
+        map.put("world", this.location.getWorld().getName());
         map.put("x", this.location.getX());
         map.put("y", this.location.getY());
         map.put("z", this.location.getZ());
