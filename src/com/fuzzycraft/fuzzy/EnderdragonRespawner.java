@@ -41,9 +41,9 @@ public class EnderdragonRespawner extends JavaPlugin {
 		}
 		
 		// Check to see if world exists.
-		if (this.world != null) {
-			es = new EnderdragonSpawner(this, this.world, sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
-			ec = new EnderdragonChecker(this.world);
+		if (sc.getWorld() != null) {
+			es = new EnderdragonSpawner(this, sc.getWorld(), sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
+			ec = new EnderdragonChecker(sc.getWorld());
 			registerListeners();
 			
 			// Checks for existence of Enderdragon(s) in specified world on load. If Enderdragon(s) do not exist, spawn dragon.		
