@@ -1,5 +1,6 @@
 package com.fuzzycraft.fuzzy;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
@@ -35,18 +36,22 @@ public class EnderdragonRespawner extends JavaPlugin {
 		SerializableLocation sc = new SerializableLocation(this.location);
 		
 		// Get location from configuration if exists.
-		if(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap().get("world") != null) {
+		if (new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap().get("world") != null) {
 			sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
 		}
 		
-		es = new EnderdragonSpawner(this, this.world, sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
-		ec = new EnderdragonChecker(this.world);
-		
-		registerListeners();
-		
-		// Checks for existence of Enderdragon(s) in specified world on load. If Enderdragon(s) do not exist, spawn dragon.		
-		if (!ec.exists()) {
-			es.spawnEnderdragon();
+		// Check to see if world exists.
+		if (this.world != null) {
+			es = new EnderdragonSpawner(this, this.world, sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
+			ec = new EnderdragonChecker(this.world);
+			registerListeners();
+			
+			// Checks for existence of Enderdragon(s) in specified world on load. If Enderdragon(s) do not exist, spawn dragon.		
+			if (!ec.exists()) {
+				es.spawnEnderdragon();
+			}
+		} else {
+			Bukkit.getLogger().warning("Configured world does not exist. Please modify the config.yml.");
 		}
 	}
 	
