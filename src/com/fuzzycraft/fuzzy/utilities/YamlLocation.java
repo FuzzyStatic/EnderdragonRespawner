@@ -66,11 +66,11 @@ public class YamlLocation {
 	 * @param ymlKey
 	 */
 	public void setBlankLocation() {
-		this.config.set(key + ".world", world);
-		this.config.set(key + ".x", x);
-		this.config.set(key + ".y", y);
-		this.config.set(key + ".z", z);
-		this.config.set(key + ".yaw", Float.floatToIntBits(yaw));
-		this.config.set(key + ".pitch", Float.floatToIntBits(pitch));
+		this.config.set(this.key + ".world", world);
+		this.config.set(this.key + ".x", x);
+		this.config.set(this.key + ".y", y);
+		this.config.set(this.key + ".z", z);
+		this.config.set(this.key + ".yaw", Float.floatToIntBits(yaw));
+		this.config.set(this.key + ".pitch", Float.floatToIntBits(pitch));
 	}
 }

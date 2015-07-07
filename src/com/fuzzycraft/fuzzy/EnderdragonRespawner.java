@@ -28,12 +28,16 @@ public class EnderdragonRespawner extends JavaPlugin {
 	
 	public void onEnable() {
 		this.world = getServer().getWorld(Defaults.WORLD);
-		this.location = new Location(world, Defaults.X, Defaults.Y, Defaults.Z);
+		this.location = new Location(this.world, Defaults.X, Defaults.Y, Defaults.Z);
 		 
 		configDefaults();
 		
-		// Get location from configuration.
-		SerializableLocation sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
+		SerializableLocation sc = new SerializableLocation(this.location);
+		
+		// Get location from configuration if exists.
+		if(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap().get("world") != null) {
+			sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
+		}
 		
 		es = new EnderdragonSpawner(this, this.world, sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
 		ec = new EnderdragonChecker(this.world);
@@ -57,7 +61,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 	
 	public void configDefaults() {
 		getDataFolder().mkdir();
-		getConfig().addDefault(Paths.LOCATION, new SerializableLocation(location).serialize());
+		getConfig().addDefault(Paths.LOCATION, new SerializableLocation(this.location).serialize());
 		getConfig().addDefault(Paths.AMOUNT, Defaults.AMOUNT);
 		getConfig().addDefault(Paths.TIME, Defaults.TIME);
 		getConfig().addDefault(Paths.MSG, Defaults.MSG);

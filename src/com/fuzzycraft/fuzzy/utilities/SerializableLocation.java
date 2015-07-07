@@ -46,18 +46,18 @@ public class SerializableLocation implements ConfigurationSerializable {
     	this.z = (Double) map.get("z");
     	this.pitch = Float.intBitsToFloat((Integer) map.get("pitch"));    
     	this.yaw = Float.intBitsToFloat((Integer) map.get("yaw"));
-    	this.location = new Location(world, x, y, z, yaw, pitch);
+    	this.location = new Location(this.world, this.x, this.y, this.z, this.yaw, this.pitch);
     }
  
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("world", location.getWorld().getName());
-        map.put("x", location.getX());
-        map.put("y", location.getY());
-        map.put("z", location.getZ());
-        map.put("pitch", Float.floatToIntBits(location.getPitch()));
-        map.put("yaw", Float.floatToIntBits(location.getYaw()));
+        map.put("world", this.location.getWorld().getName());
+        map.put("x", this.location.getX());
+        map.put("y", this.location.getY());
+        map.put("z", this.location.getZ());
+        map.put("pitch", Float.floatToIntBits(this.location.getPitch()));
+        map.put("yaw", Float.floatToIntBits(this.location.getYaw()));
         return map;
     }
     
