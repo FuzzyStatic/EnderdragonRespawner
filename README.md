@@ -4,6 +4,8 @@ A minecraft plugin API (sans commands/configurations) that will respawn the Ende
 
 ## Releases
 
+[v1.3.1] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3.1/EnderdragonRespawner.jar) - Location NPE on first load fix
+
 [v1.3] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3/EnderdragonRespawner.jar) - Enderdragon amount / Ender Crystal respawn
 
 [v1.2] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.2/EnderdragonRespawner.jar) - Event crash fix / Configuration
