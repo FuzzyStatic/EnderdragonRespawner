@@ -22,21 +22,24 @@ public class EnderdragonSpawnTimer implements Listener {
 	public EnderdragonRespawner plugin;
 	private int respawnTime;
 	private EnderdragonSpawner es;
-	private EnderdragonChecker edc;
-	private EnderdragonCrystals ecl;
+	private EnderdragonChecker ec;
+	private EnderdragonCrystals enderCrystals;
+	private Obsidian obsidian;
 
 	/**
 	 * Constructs listener for EnderdragonSpawnTimer.
 	 * @param plugin
 	 * @param es
 	 * @param ec
+	 * @param o 
 	 * @param respawnTime
 	 */
-	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, EnderdragonSpawner es, EnderdragonChecker ec, EnderdragonCrystals ecl, int respawnTime) {
+	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, EnderdragonSpawner es, EnderdragonChecker ec, EnderdragonCrystals enderCrystals, Obsidian obsidian, int respawnTime) {
 		this.plugin = plugin;
 		this.es = es;
-		this.edc = ec;
-		this.ecl = ecl;
+		this.ec = ec;
+		this.enderCrystals = enderCrystals;
+		this.obsidian = obsidian;
 		this.respawnTime = respawnTime;
 	}
 		
@@ -46,12 +49,13 @@ public class EnderdragonSpawnTimer implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntityDeath(EntityDeathEvent event) {
-		if(!(event.getEntity() instanceof EnderDragon) || this.edc.exists()) {
+		if(!(event.getEntity() instanceof EnderDragon) || this.ec.exists()) {
 			return;
 		}
 		
-		// Respawn Ender Crystals now just in case of server shutdown.
-		this.ecl.respawnCrystals();
+		// Locations currently in memory. Respawn Ender Crystals and obsidian now just in case of server shutdown.
+		this.enderCrystals.respawn();
+		this.obsidian.respawn();
 		
 		// Create the task anonymously to spawn Enderdragon and schedule to run it once after specified time.
 		new BukkitRunnable() {

@@ -15,6 +15,7 @@ public class Defaults {
 	public static final int TIME = 21600; // In seconds
 	public static final String MSG = "The beast awakens from his slumber...";
 	public static final boolean RESPAWN_CRYSTALS = true;
+	public static final boolean RESPAWN_OBSIDIAN = false;
 	public static final boolean CREATE_PORTAL = false;
 	public static final boolean CREATE_EGG = true;
 }

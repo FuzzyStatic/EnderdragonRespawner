@@ -39,7 +39,7 @@ public class EnderdragonChecker {
 	 * Return current world.
 	 * @return
 	 */
-	public World world() {
+	public World getWorld() {
 		return this.world;
 	}
 	

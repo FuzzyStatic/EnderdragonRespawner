@@ -11,6 +11,7 @@ import com.fuzzycraft.fuzzy.constants.Paths;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonCrystals;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonPreventPortal;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonSpawnTimer;
+import com.fuzzycraft.fuzzy.listeners.Obsidian;
 import com.fuzzycraft.fuzzy.utilities.SerializableLocation;
 import com.fuzzycraft.fuzzy.utilities.YamlLocation;
 
@@ -24,6 +25,8 @@ public class EnderdragonRespawner extends JavaPlugin {
 	
 	private EnderdragonSpawner es;
 	private EnderdragonChecker ec;
+	private EnderdragonCrystals enderCrystals;
+	private Obsidian obsidian;
 	private World world;
 	private Location location;
 	
@@ -57,10 +60,19 @@ public class EnderdragonRespawner extends JavaPlugin {
 	
 	public void registerListeners() {
 		PluginManager pm = getServer().getPluginManager();
-		EnderdragonCrystals ecl = new EnderdragonCrystals(this, ec.world(), getConfig().getBoolean(Paths.RESPAWN_CRYSTALS));
-		pm.registerEvents(ecl, this);
-		pm.registerEvents(new EnderdragonSpawnTimer(this, es, ec, ecl, getConfig().getInt(Paths.TIME)), this);
-		pm.registerEvents(new EnderdragonPreventPortal(this, ec.world(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
+		
+		if (getConfig().getBoolean(Paths.RESPAWN_CRYSTALS)) {
+			this.enderCrystals = new EnderdragonCrystals(this, ec.getWorld());
+		}
+		
+		if (getConfig().getBoolean(Paths.RESPAWN_OBSIDIAN)) {
+			this.obsidian = new Obsidian(this, ec.getWorld());
+		}
+		
+		pm.registerEvents(this.enderCrystals, this);
+		pm.registerEvents(this.obsidian, this);
+		pm.registerEvents(new EnderdragonSpawnTimer(this, this.es, this.ec, this.enderCrystals, this.obsidian, getConfig().getInt(Paths.TIME)), this);
+		pm.registerEvents(new EnderdragonPreventPortal(this, ec.getWorld(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
 		
 	}
 	
@@ -71,6 +83,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 		getConfig().addDefault(Paths.TIME, Defaults.TIME);
 		getConfig().addDefault(Paths.MSG, Defaults.MSG);
 		getConfig().addDefault(Paths.RESPAWN_CRYSTALS, Defaults.RESPAWN_CRYSTALS);
+		getConfig().addDefault(Paths.RESPAWN_OBSIDIAN, Defaults.RESPAWN_OBSIDIAN);
 		getConfig().addDefault(Paths.CREATE_PORTAL, Defaults.CREATE_PORTAL);
 		getConfig().addDefault(Paths.CREATE_EGG, Defaults.CREATE_EGG);
 		getConfig().options().copyDefaults(true);
