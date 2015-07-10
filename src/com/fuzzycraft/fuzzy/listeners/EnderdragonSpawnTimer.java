@@ -7,9 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.fuzzycraft.fuzzy.EnderdragonChecker;
 import com.fuzzycraft.fuzzy.EnderdragonRespawner;
-import com.fuzzycraft.fuzzy.EnderdragonSpawner;
 
 /**
  * 
