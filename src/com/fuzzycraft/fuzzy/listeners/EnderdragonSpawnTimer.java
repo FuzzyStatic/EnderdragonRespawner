@@ -21,23 +21,17 @@ public class EnderdragonSpawnTimer implements Listener {
 
 	public EnderdragonRespawner plugin;
 	private int respawnTime;
-	private EnderdragonSpawner es;
-	private EnderdragonChecker ec;
 	private EnderdragonCrystals enderCrystals;
 	private Obsidian obsidian;
 
 	/**
 	 * Constructs listener for EnderdragonSpawnTimer.
 	 * @param plugin
-	 * @param es
-	 * @param ec
 	 * @param o 
 	 * @param respawnTime
 	 */
-	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, EnderdragonSpawner es, EnderdragonChecker ec, EnderdragonCrystals enderCrystals, Obsidian obsidian, int respawnTime) {
+	public EnderdragonSpawnTimer(EnderdragonRespawner plugin, EnderdragonCrystals enderCrystals, Obsidian obsidian, int respawnTime) {
 		this.plugin = plugin;
-		this.es = es;
-		this.ec = ec;
 		this.enderCrystals = enderCrystals;
 		this.obsidian = obsidian;
 		this.respawnTime = respawnTime;
@@ -49,7 +43,7 @@ public class EnderdragonSpawnTimer implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntityDeath(EntityDeathEvent event) {
-		if(!(event.getEntity() instanceof EnderDragon) || this.ec.exists()) {
+		if(!(event.getEntity() instanceof EnderDragon) || EnderdragonRespawner.ec.exists()) {
 			return;
 		}
 		
@@ -62,7 +56,7 @@ public class EnderdragonSpawnTimer implements Listener {
 	        	
 			@Override
 			public void run() {
-				es.spawnEnderdragon();
+				EnderdragonRespawner.es.spawnEnderdragon();
 			}
 			
 		}.runTaskLater(this.plugin, this.respawnTime * 20);

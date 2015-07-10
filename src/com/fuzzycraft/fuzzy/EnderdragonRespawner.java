@@ -23,8 +23,9 @@ import com.fuzzycraft.fuzzy.utilities.YamlLocation;
 
 public class EnderdragonRespawner extends JavaPlugin {
 	
-	private EnderdragonSpawner es;
-	private EnderdragonChecker ec;
+	public static EnderdragonSpawner es;
+	public static EnderdragonChecker ec;
+	
 	private EnderdragonCrystals enderCrystals;
 	private Obsidian obsidian;
 	private World world;
@@ -71,7 +72,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 		
 		pm.registerEvents(this.enderCrystals, this);
 		pm.registerEvents(this.obsidian, this);
-		pm.registerEvents(new EnderdragonSpawnTimer(this, this.es, this.ec, this.enderCrystals, this.obsidian, getConfig().getInt(Paths.TIME)), this);
+		pm.registerEvents(new EnderdragonSpawnTimer(this, this.enderCrystals, this.obsidian, getConfig().getInt(Paths.TIME)), this);
 		pm.registerEvents(new EnderdragonPreventPortal(this, ec.getWorld(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
 		
 	}
