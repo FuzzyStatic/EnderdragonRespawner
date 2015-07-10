@@ -4,7 +4,7 @@ A minecraft plugin API (sans commands/configurations) that will respawn the Ende
 
 ## Releases
 
-[v1.3.2] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3.1/EnderdragonRespawner.jar) - Unknown world fix
+[v1.3.2] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3.2/EnderdragonRespawner.jar) - Unknown world fix
 
 [v1.3.1] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3.1/EnderdragonRespawner.jar) - Location NPE on first load fix
 
