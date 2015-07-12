@@ -32,6 +32,7 @@ public class EnderdragonChecker {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	

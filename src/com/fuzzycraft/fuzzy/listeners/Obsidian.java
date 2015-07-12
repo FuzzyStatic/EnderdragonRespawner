@@ -47,7 +47,7 @@ public class Obsidian implements Listener {
 	 * Respawn destroyed obsidian.
 	 */
 	public void respawn() {
-		if (this.list != null) {
+		if (!this.list.isEmpty()) {
 			for (Location loc : this.list) {
 				Block block = loc.getBlock();
 				
