@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 
 import com.fuzzycraft.fuzzy.EnderdragonRespawner;
 
@@ -31,14 +31,14 @@ public class Obsidian implements Listener {
 	}
 	
 	/**
-	 * Checks for damage to Obsidian in specified world.
+	 * Checks for damage to obsidian in specified world.
 	 * @param event
 	 */
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onBlockDamage(BlockDamageEvent event) {
+	public void onBlockBreak(BlockBreakEvent event) {
 		Block block = event.getBlock();
 		
-		if(block.getType() == Material.OBSIDIAN) {
+		if (block.getType() == Material.OBSIDIAN) {
 			list.add(block.getLocation());
 		}
 	}
@@ -51,8 +51,8 @@ public class Obsidian implements Listener {
 			for (Location loc : this.list) {
 				Block block = loc.getBlock();
 				
-				// Check if block is already obisidian.
-				if(block.getType() == Material.OBSIDIAN) {
+				// Check if block is already obsidian.
+				if (block.getType() == Material.OBSIDIAN) {
 					return;
 				}
 				

@@ -23,8 +23,9 @@ import com.fuzzycraft.fuzzy.utilities.YamlLocation;
 
 public class EnderdragonRespawner extends JavaPlugin {
 	
-	private EnderdragonSpawner es;
-	private EnderdragonChecker ec;
+	public static EnderdragonSpawner es;
+	public static EnderdragonChecker ec;
+	
 	private EnderdragonCrystals enderCrystals;
 	private Obsidian obsidian;
 	private World world;
@@ -45,8 +46,8 @@ public class EnderdragonRespawner extends JavaPlugin {
 		
 		// Check to see if world exists.
 		if (sc.getWorld() != null) {
-			this.es = new EnderdragonSpawner(this, sc.getWorld(), sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
-			this.ec = new EnderdragonChecker(sc.getWorld());
+			es = new EnderdragonSpawner(this, sc.getWorld(), sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
+			ec = new EnderdragonChecker(sc.getWorld());
 			registerListeners();
 			
 			// Checks for existence of Enderdragon(s) in specified world on load. If Enderdragon(s) do not exist, spawn dragon.		
@@ -62,17 +63,17 @@ public class EnderdragonRespawner extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 		
 		if (getConfig().getBoolean(Paths.RESPAWN_CRYSTALS)) {
-			this.enderCrystals = new EnderdragonCrystals(this, this.ec.getWorld());
+			this.enderCrystals = new EnderdragonCrystals(this, ec.getWorld());
 			pm.registerEvents(this.enderCrystals, this);
 		}
 		
 		if (getConfig().getBoolean(Paths.RESPAWN_OBSIDIAN)) {
-			this.obsidian = new Obsidian(this, this.ec.getWorld());
+			this.obsidian = new Obsidian(this, ec.getWorld());
 			pm.registerEvents(this.obsidian, this);
 		}
 		
-		pm.registerEvents(new EnderdragonSpawnTimer(this, this.ec, this.es, this.enderCrystals, this.obsidian, getConfig().getInt(Paths.TIME)), this);
-		pm.registerEvents(new EnderdragonPreventPortal(this, this.ec.getWorld(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
+		pm.registerEvents(new EnderdragonSpawnTimer(this, this.enderCrystals, this.obsidian, getConfig().getInt(Paths.TIME)), this);
+		pm.registerEvents(new EnderdragonPreventPortal(this, ec.getWorld(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
 		
 	}
 	

@@ -51,7 +51,7 @@ public class EnderdragonPreventPortal implements Listener {
 	public void onEntityCreatePortal(EntityCreatePortalEvent event) {		
 		Entity entity = event.getEntity();
 		
-		if(!(entity instanceof EnderDragon) || !(entity.getWorld() == this.world) || this.createPortal) {
+		if (!(entity instanceof EnderDragon) || !(entity.getWorld() == this.world) || this.createPortal) {
 			return;
 		}
 		
