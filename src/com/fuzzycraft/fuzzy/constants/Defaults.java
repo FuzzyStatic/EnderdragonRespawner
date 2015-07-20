@@ -7,6 +7,7 @@ package com.fuzzycraft.fuzzy.constants;
  */
 
 public class Defaults {
+	public static final String DIR_WORLDS = "worlds";
 	public static final String WORLD = "world_the_end";
 	public static final double X = 0;
 	public static final double Y = 20;

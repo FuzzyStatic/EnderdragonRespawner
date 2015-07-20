@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.fuzzycraft.fuzzy.constants.Defaults;
 import com.fuzzycraft.fuzzy.constants.Paths;
@@ -12,6 +13,7 @@ import com.fuzzycraft.fuzzy.listeners.EnderdragonCrystals;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonPreventPortal;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonSpawnTimer;
 import com.fuzzycraft.fuzzy.listeners.Obsidian;
+import com.fuzzycraft.fuzzy.utilities.DirectoryStructure;
 import com.fuzzycraft.fuzzy.utilities.SerializableLocation;
 import com.fuzzycraft.fuzzy.utilities.YamlLocation;
 
@@ -26,12 +28,32 @@ public class EnderdragonRespawner extends JavaPlugin {
 	public static EnderdragonSpawner es;
 	public static EnderdragonChecker ec;
 	
-	private EnderdragonCrystals enderCrystals;
-	private Obsidian obsidian;
+	private DirectoryStructure ds;
+	private String defaultDirectory = Defaults.DIR_WORLDS;
+	private String defaultWorld = Defaults.WORLD;
 	private World world;
 	private Location location;
 	
-	public void onEnable() {
+	private EnderdragonCrystals enderCrystals;
+	private Obsidian obsidian;
+	
+	public void onEnable() {	
+		this.ds = new DirectoryStructure(this, this.defaultDirectory);
+		
+		new BukkitRunnable() {
+        	
+			public void run() {
+				ds.createDirectory();
+				
+				world = getServer().getWorld(defaultWorld);
+				location = new Location(world, Defaults.X, Defaults.Y, Defaults.Z);
+				
+				
+				configDefaults();
+			}
+			
+		}.runTaskLater(this, 1);
+		
 		this.world = getServer().getWorld(Defaults.WORLD);
 		this.location = new Location(this.world, Defaults.X, Defaults.Y, Defaults.Z);
 		 
@@ -57,6 +79,10 @@ public class EnderdragonRespawner extends JavaPlugin {
 		} else {
 			Bukkit.getLogger().warning("Configured world does not exist. Please modify the config.yml.");
 		}
+	}
+	
+	public void onDisable() {
+	
 	}
 	
 	public void registerListeners() {
