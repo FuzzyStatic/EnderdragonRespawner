@@ -57,51 +57,30 @@ public class EnderdragonRespawner extends JavaPlugin {
 					
 					if (cwp.getLocation().getWorld() != null) {
 						SerializableLocation sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
+						EnderdragonSpawner es = new EnderdragonSpawner(plugin, sc.getWorld(), sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
+						EnderdragonChecker ec = new EnderdragonChecker(sc.getWorld());
+						PluginManager pm = getServer().getPluginManager();
+						
+						if (getConfig().getBoolean(Paths.RESPAWN_CRYSTALS)) {
+							EnderdragonCrystals enderCrystals = new EnderdragonCrystals(plugin, ec.getWorld());
+							pm.registerEvents(enderCrystals, plugin);
+						}
+						
+						if (getConfig().getBoolean(Paths.RESPAWN_OBSIDIAN)) {
+							Obsidian obsidian = new Obsidian(plugin, ec.getWorld());
+							pm.registerEvents(obsidian, plugin);
+						}
+						
+						pm.registerEvents(new EnderdragonSpawnTimer(plugin, enderCrystals, obsidian, getConfig().getInt(Paths.TIME)), plugin);
+						pm.registerEvents(new EnderdragonPreventPortal(plugin, ec.getWorld(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), plugin);
 					}
 				}
 			}
 			
 		}.runTaskLater(this, 1);
-				
-		// Get location from configuration if exists.
-		if (new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap().get("world") != null) {
-			sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
-		}
-		
-		// Check to see if world exists.
-		if (sc.getWorld() != null) {
-			es = new EnderdragonSpawner(this, sc.getWorld(), sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
-			ec = new EnderdragonChecker(sc.getWorld());
-			registerListeners();
-			
-			// Checks for existence of Enderdragon(s) in specified world on load. If Enderdragon(s) do not exist, spawn dragon.		
-			if (!ec.exists()) {
-				es.spawnEnderdragon();
-			}
-		} else {
-			Bukkit.getLogger().warning("Configured world does not exist. Please modify the config.yml.");
-		}
 	}
 	
 	public void onDisable() {
 	
-	}
-	
-	public void registerListeners() {
-		PluginManager pm = getServer().getPluginManager();
-		
-		if (getConfig().getBoolean(Paths.RESPAWN_CRYSTALS)) {
-			this.enderCrystals = new EnderdragonCrystals(this, ec.getWorld());
-			pm.registerEvents(this.enderCrystals, this);
-		}
-		
-		if (getConfig().getBoolean(Paths.RESPAWN_OBSIDIAN)) {
-			this.obsidian = new Obsidian(this, ec.getWorld());
-			pm.registerEvents(this.obsidian, this);
-		}
-		
-		pm.registerEvents(new EnderdragonSpawnTimer(this, this.enderCrystals, this.obsidian, getConfig().getInt(Paths.TIME)), this);
-		pm.registerEvents(new EnderdragonPreventPortal(this, ec.getWorld(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
-		
 	}
 }
