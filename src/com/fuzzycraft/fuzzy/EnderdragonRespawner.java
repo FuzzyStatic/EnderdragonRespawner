@@ -56,15 +56,13 @@ public class EnderdragonRespawner extends JavaPlugin {
 					ConfigWorldParameters cwp = new ConfigWorldParameters(plugin, defaultDirectory, file);
 					
 					if (cwp.getLocation().getWorld() != null) {
-						sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
+						SerializableLocation sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
 					}
 				}
 			}
 			
 		}.runTaskLater(this, 1);
-		
-		SerializableLocation sc = new SerializableLocation(this.location);
-		
+				
 		// Get location from configuration if exists.
 		if (new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap().get("world") != null) {
 			sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
@@ -105,19 +103,5 @@ public class EnderdragonRespawner extends JavaPlugin {
 		pm.registerEvents(new EnderdragonSpawnTimer(this, this.enderCrystals, this.obsidian, getConfig().getInt(Paths.TIME)), this);
 		pm.registerEvents(new EnderdragonPreventPortal(this, ec.getWorld(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), this);
 		
-	}
-	
-	public void configDefaults() {
-		getDataFolder().mkdir();
-		getConfig().addDefault(Paths.LOCATION, new SerializableLocation(this.location).serialize());
-		getConfig().addDefault(Paths.AMOUNT, Defaults.AMOUNT);
-		getConfig().addDefault(Paths.TIME, Defaults.TIME);
-		getConfig().addDefault(Paths.MSG, Defaults.MSG);
-		getConfig().addDefault(Paths.RESPAWN_CRYSTALS, Defaults.RESPAWN_CRYSTALS);
-		getConfig().addDefault(Paths.RESPAWN_OBSIDIAN, Defaults.RESPAWN_OBSIDIAN);
-		getConfig().addDefault(Paths.CREATE_PORTAL, Defaults.CREATE_PORTAL);
-		getConfig().addDefault(Paths.CREATE_EGG, Defaults.CREATE_EGG);
-		getConfig().options().copyDefaults(true);
-		saveConfig();
 	}
 }
