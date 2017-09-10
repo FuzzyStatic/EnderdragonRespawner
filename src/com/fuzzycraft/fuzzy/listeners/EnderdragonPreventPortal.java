@@ -3,7 +3,6 @@ package com.fuzzycraft.fuzzy.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fuzzycraft.fuzzy.configurations.ConfigParameters;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EnderDragon;
@@ -15,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCreatePortalEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.fuzzycraft.fuzzy.utilities.ConfigParameters;
 
 /**
  * @author Allen Flickinger (allen.flickinger@gmail.com)

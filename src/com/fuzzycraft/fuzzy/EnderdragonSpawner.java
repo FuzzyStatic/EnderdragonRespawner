@@ -1,15 +1,11 @@
 package com.fuzzycraft.fuzzy;
 
-import com.fuzzycraft.fuzzy.configurations.ConfigParameters;
+import com.fuzzycraft.fuzzy.utilities.ConfigParameters;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Allen Flickinger (allen.flickinger@gmail.com)

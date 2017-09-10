@@ -4,11 +4,9 @@ import java.io.File;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
-import com.fuzzycraft.fuzzy.configurations.ConfigParameters;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.World;
 
-import com.fuzzycraft.fuzzy.constants.Defaults;
 
 /**
  * @author Allen Flickinger (allen.flickinger@gmail.com)
@@ -16,13 +14,17 @@ import com.fuzzycraft.fuzzy.constants.Defaults;
 
 public class DirectoryStructure {
 
+    public static final String CONFIG_NAME = "config.yml";
+    public static final String DIR_WORLDS = "worlds";
+    public static final String DIR_DATA = "data";
+
     private JavaPlugin plugin;
     private static File parentDirectory, worldsDirectory;
 
     public DirectoryStructure(JavaPlugin plugin) {
         this.plugin = plugin;
         parentDirectory = new File(this.plugin.getDataFolder() + File.separator);
-        worldsDirectory = new File(getParentDirectoryPath() + File.separator + Defaults.DIR_WORLDS + File.separator);
+        worldsDirectory = new File(getParentDirectoryPath() + File.separator + DIR_WORLDS + File.separator);
     }
 
     public void createDirectoryStructure() {
@@ -58,6 +60,7 @@ public class DirectoryStructure {
             if (!worldDirectory.exists()) {
                 this.plugin.getLogger().log(Level.INFO, "Creating World Directory " + worldDirectory.toString() + ": " +
                         worldDirectory.mkdir());
+                createDataDirectory(worldDirectory.toString());
             }
         }
     }
@@ -68,16 +71,26 @@ public class DirectoryStructure {
         if (!worldDirectory.exists()) {
             this.plugin.getLogger().log(Level.INFO, "Creating World Directory " + worldDirectory.toString() + ": " +
                     worldDirectory.mkdir());
+            createDataDirectory(worldDirectory.toString());
+        }
+    }
+
+    private void createDataDirectory(String worldDirectory) {
+        File dataDirectory = new File(worldDirectory + File.separator + DIR_DATA + File.separator);
+
+        if (!dataDirectory.exists()) {
+            this.plugin.getLogger().log(Level.INFO, "Creating Data Directory for " + worldDirectory + ": " +
+                    dataDirectory.mkdir());
         }
     }
 
     public void createWorldDefaultConfigurations() {
         for (World world : this.plugin.getServer().getWorlds()) {
-            AtomicReference<File> file = new AtomicReference<File>(new File(getWorldsDirectoryPath() + File.separator + world.getName() + File.separator + Defaults.CONFIG_NAME));
+            File file = new File(getWorldsDirectoryPath() + File.separator + world.getName() + File.separator + CONFIG_NAME);
 
-            if (!file.get().exists()) {
+            if (!file.exists()) {
                 this.plugin.getLogger().log(Level.INFO, "Creating Default Configuration for " + world.getName());
-                ConfigParameters defaultConfig = new ConfigParameters(this.plugin, world, file.get().toString());
+                ConfigParameters defaultConfig = new ConfigParameters(this.plugin, world, file.toString());
                 defaultConfig.setDefaults();
             }
         }

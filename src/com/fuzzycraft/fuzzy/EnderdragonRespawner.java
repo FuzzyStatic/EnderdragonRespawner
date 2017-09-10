@@ -3,8 +3,7 @@ package com.fuzzycraft.fuzzy;
 import java.io.File;
 import java.util.logging.Level;
 
-import com.fuzzycraft.fuzzy.configurations.ConfigParameters;
-import com.fuzzycraft.fuzzy.constants.Defaults;
+import com.fuzzycraft.fuzzy.utilities.ConfigParameters;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonCrystals;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonPreventPortal;
 import com.fuzzycraft.fuzzy.listeners.EnderdragonSpawnTimer;
@@ -40,7 +39,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 
                         if (world != null) {
                             for (File file : worldsFile.listFiles()) {
-                                if (file.getName().equals(Defaults.CONFIG_NAME) && file.isFile()) {
+                                if (file.getName().equals(DirectoryStructure.CONFIG_NAME) && file.isFile()) {
                                     ConfigParameters cp = new ConfigParameters(plugin, world, file.toString());
 
                                     if (cp.getActive()) {

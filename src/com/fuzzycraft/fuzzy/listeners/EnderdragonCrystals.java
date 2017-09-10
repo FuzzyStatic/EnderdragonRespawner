@@ -1,5 +1,8 @@
 package com.fuzzycraft.fuzzy.listeners;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +35,17 @@ public class EnderdragonCrystals implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onEntityDamage(EntityDamageEvent event) {
+    public void onEntityDamage(EntityDamageEvent event) throws FileNotFoundException {
         Entity entity = event.getEntity();
 
         if (entity instanceof EnderCrystal && entity.getWorld().equals(this.world)) {
             list.add(entity.getLocation());
         }
+
+        PrintWriter pw = new PrintWriter(new FileOutputStream("plugin/Enderdragonspawner/worlds/world_the_end/data/crystals"));
+        for (Location location : list)
+            pw.println(location);
+        pw.close();
     }
 
     public void respawn() {
