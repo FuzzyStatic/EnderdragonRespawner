@@ -2,12 +2,18 @@
 
 A minecraft plugin API (sans commands/configurations) that will respawn the Enderdragon in **world_the_end** every **6 hours** or upon server load if no Enderdragon exists in world_the_end. Also, prevents spawning of Enderdragon portal.
 
-## Releases
-
-[v1.4] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.4/EnderdragonRespawner.jar) - Obsidian respawn
-
-[v1.3.2] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3.2/EnderdragonRespawner.jar) - Unknown world fix
-
-[v1.3.1] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3.1/EnderdragonRespawner.jar) - Location NPE on first load fix
-
-[v1.3] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3/EnderdragonRespawner.jar) - Enderdragon amount / Ender Crystal respawn
+```yaml
+active: true
+spawnLocation:
+  x: 0.0
+  y: 20.0
+  z: 0.0
+numberOfDragons: 1
+respawnTime: 60
+spawnAlert: The beast awakens from his slumber...
+respawn:
+  enderCrystals: true
+  obsidian: false
+createPortal: false
+createEgg: true
+```
