@@ -1,82 +1,50 @@
 package com.fuzzycraft.fuzzy;
 
+import com.fuzzycraft.fuzzy.configurations.ConfigParameters;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author FuzzyStatic (fuzzy@fuzzycraft.com)
+ * @author Allen Flickinger (allen.flickinger@gmail.com)
  */
 
 public class EnderdragonSpawner {
 
-    public EnderdragonRespawner plugin;
-    private World world;
-    private Location location;
-    private int amount;
-    private String msg;
+    private JavaPlugin plugin;
+    private ConfigParameters cp;
 
-    /**
-     * Insert which world and location to spawn Enderdragon and which message to produce.
-     *
-     * @param plugin
-     * @param world
-     * @param location
-     * @param msg
-     */
-    public EnderdragonSpawner(EnderdragonRespawner plugin, World world, Location location, int amount, String msg) {
+    public EnderdragonSpawner(JavaPlugin plugin, ConfigParameters cp) {
         this.plugin = plugin;
-        this.world = world;
-        this.location = location;
-        this.amount = amount;
-        this.msg = msg;
+        this.cp = cp;
     }
 
-    /**
-     * Spawn Enderdragon and broadcast message.
-     */
     public void spawnEnderdragon() {
-        for (int i = 0; i < this.amount; i++) {
-            this.world.spawnEntity(this.location, EntityType.ENDER_DRAGON);
+        for (int i = 0; i < this.cp.getAmount(); i++) {
+            this.cp.getWorld().spawnEntity(this.cp.getLocation(), EntityType.ENDER_DRAGON);
         }
 
-        this.plugin.getServer().broadcastMessage(ChatColor.DARK_RED + this.msg);
+        this.plugin.getServer().broadcastMessage(ChatColor.DARK_RED + this.cp.getMsg());
     }
 
-    /**
-     * Return current world.
-     *
-     * @return
-     */
-    public World world() {
-        return this.world;
+    public boolean exists() {
+        for (Entity entity : this.cp.getWorld().getEntities()) {
+            if (entity instanceof EnderDragon && !entity.isDead()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    /**
-     * Return current location.
-     *
-     * @return
-     */
-    public Location location() {
-        return this.location;
-    }
 
-    /**
-     * Return current amount.
-     *
-     * @return
-     */
-    public int amount() {
-        return this.amount;
-    }
-
-    /**
-     * Return current message.
-     *
-     * @return
-     */
-    public String msg() {
-        return this.msg;
+    public ConfigParameters getConfigParameters() {
+        return this.cp;
     }
 }

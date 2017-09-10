@@ -12,6 +12,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
  * @author Allen Flickinger (allen.flickinger@gmail.com)
  */
 
+@Deprecated
 public class SerializableLocation implements ConfigurationSerializable {
 
     private final World world;

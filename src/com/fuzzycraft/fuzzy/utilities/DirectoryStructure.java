@@ -1,6 +1,7 @@
 package com.fuzzycraft.fuzzy.utilities;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 import com.fuzzycraft.fuzzy.configurations.ConfigParameters;
@@ -72,11 +73,11 @@ public class DirectoryStructure {
 
     public void createWorldDefaultConfigurations() {
         for (World world : this.plugin.getServer().getWorlds()) {
-            File file = new File(getWorldsDirectoryPath() + File.separator + world.getName() + File.separator + Defaults.CONFIG_NAME);
+            AtomicReference<File> file = new AtomicReference<File>(new File(getWorldsDirectoryPath() + File.separator + world.getName() + File.separator + Defaults.CONFIG_NAME));
 
-            if (!file.exists()) {
+            if (!file.get().exists()) {
                 this.plugin.getLogger().log(Level.INFO, "Creating Default Configuration for " + world.getName());
-                ConfigParameters defaultConfig = new ConfigParameters(this.plugin, file.toString());
+                ConfigParameters defaultConfig = new ConfigParameters(this.plugin, world, file.get().toString());
                 defaultConfig.setDefaults();
             }
         }

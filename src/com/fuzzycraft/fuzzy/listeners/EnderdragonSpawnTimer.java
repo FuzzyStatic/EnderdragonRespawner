@@ -1,66 +1,54 @@
 package com.fuzzycraft.fuzzy.listeners;
 
+import com.fuzzycraft.fuzzy.EnderdragonSpawner;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.fuzzycraft.fuzzy.EnderdragonRespawner;
-
 /**
- * @author FuzzyStatic (fuzzy@fuzzycraft.com)
+ * @author Allen Flickinger (allen.flickinger@gmail.com)
  */
 
 public class EnderdragonSpawnTimer implements Listener {
 
-    public EnderdragonRespawner plugin;
-    private EnderdragonCrystals enderCrystals;
-    private Obsidian obsidian;
-    private int respawnTime;
+    private JavaPlugin plugin;
+    private EnderdragonSpawner es;
+    private EnderdragonCrystals ec;
+    private Obsidian o;
 
-    /**
-     * Constructs listener for EnderdragonSpawnTimer.
-     *
-     * @param plugin
-     * @param obsidian
-     * @param respawnTime
-     */
-    public EnderdragonSpawnTimer(EnderdragonRespawner plugin, EnderdragonCrystals enderCrystals, Obsidian obsidian, int respawnTime) {
+    public EnderdragonSpawnTimer(JavaPlugin plugin, EnderdragonSpawner es, EnderdragonCrystals ec, Obsidian o) {
         this.plugin = plugin;
-        this.enderCrystals = enderCrystals;
-        this.obsidian = obsidian;
-        this.respawnTime = respawnTime;
+        this.es = es;
+        this.ec = ec;
+        this.o = o;
     }
 
-    /**
-     * Checks for death of Enderdragon in specified world. If Enderdragon does not exist, start a respawn timer for specified time.
-     *
-     * @param event
-     */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-        if (!(event.getEntity() instanceof EnderDragon) || EnderdragonRespawner.ec.exists()) {
+        if (!(event.getEntity() instanceof EnderDragon) || this.es.exists()) {
             return;
         }
 
         // Locations currently in memory. Respawn Ender Crystals and obsidian now just in case of server shutdown.
-        if (this.enderCrystals != null) {
-            this.enderCrystals.respawn();
+        if (this.ec != null) {
+            this.ec.respawn();
         }
 
-        if (this.obsidian != null) {
-            this.obsidian.respawn();
+        if (this.o != null) {
+            this.o.respawn();
         }
 
         // Create the task anonymously to spawn Enderdragon and schedule to run it once after specified time.
         new BukkitRunnable() {
 
             public void run() {
-                EnderdragonRespawner.es.spawnEnderdragon();
+                es.spawnEnderdragon();
             }
 
-        }.runTaskLater(this.plugin, this.respawnTime * 20);
+        }.runTaskLater(this.plugin, this.es.getConfigParameters().getTime() * 20);
     }
 }

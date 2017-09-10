@@ -3,8 +3,8 @@ package com.fuzzycraft.fuzzy.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fuzzycraft.fuzzy.configurations.ConfigParameters;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
@@ -14,44 +14,27 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCreatePortalEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.fuzzycraft.fuzzy.EnderdragonRespawner;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * @author FuzzyStatic (fuzzy@fuzzycraft.com)
+ * @author Allen Flickinger (allen.flickinger@gmail.com)
  */
 
 public class EnderdragonPreventPortal implements Listener {
 
-    public EnderdragonRespawner plugin;
-    private World world;
-    private boolean createPortal, createEgg;
+    private JavaPlugin plugin;
+    private ConfigParameters cp;
 
-    /**
-     * Constructs listener for EnderdragonPreventPortal.
-     *
-     * @param plugin
-     * @param world
-     * @param createPortal
-     * @param createEgg
-     */
-    public EnderdragonPreventPortal(EnderdragonRespawner plugin, World world, boolean createPortal, boolean createEgg) {
+    public EnderdragonPreventPortal(JavaPlugin plugin, ConfigParameters cp) {
         this.plugin = plugin;
-        this.world = world;
-        this.createPortal = createPortal;
-        this.createEgg = createEgg;
+        this.cp = cp;
     }
 
-    /**
-     * Checks for portal creation by an Enderdragon in specified world. Removes portal blocks if specified.
-     *
-     * @param event
-     */
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onEntityCreatePortal(EntityCreatePortalEvent event) {
         Entity entity = event.getEntity();
 
-        if (!(entity instanceof EnderDragon) || !(entity.getWorld() == this.world) || this.createPortal) {
+        if (!(entity instanceof EnderDragon) || !(entity.getWorld() == this.cp.getWorld()) || this.cp.getCreatePortal()) {
             return;
         }
 
@@ -68,9 +51,8 @@ public class EnderdragonPreventPortal implements Listener {
                 blocks.remove(block);
 
                 // Drop egg
-                if (this.createEgg) {
+                if (this.cp.getCreateEgg())
                     entity.getWorld().dropItemNaturally(entity.getLocation(), new ItemStack(Material.DRAGON_EGG));
-                }
             }
         }
 

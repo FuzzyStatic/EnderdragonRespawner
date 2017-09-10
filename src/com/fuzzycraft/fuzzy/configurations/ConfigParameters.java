@@ -1,6 +1,8 @@
 package com.fuzzycraft.fuzzy.configurations;
 
 import com.fuzzycraft.fuzzy.utilities.*;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import com.fuzzycraft.fuzzy.constants.Defaults;
@@ -17,15 +19,17 @@ public class ConfigParameters {
     private ConfigAccessor configAccessor;
     private FileConfiguration config;
     private JavaPlugin plugin;
+    private World world;
     private String filename;
 
-    public ConfigParameters(JavaPlugin plugin, String filename) {
+    public ConfigParameters(JavaPlugin plugin, World world, String filename) {
         this.plugin = plugin;
 
         if (!this.plugin.isEnabled()) {
             throw new IllegalArgumentException("Plugin must be initialized!");
         }
 
+        this.world = world;
         this.filename = filename;
         this.configAccessor = new ConfigAccessor(this.plugin, filename);
         this.config = configAccessor.getConfig();
@@ -45,13 +49,19 @@ public class ConfigParameters {
         this.configAccessor.saveConfig();
     }
 
+    public World getWorld() {
+        return this.world;
+    }
+
     public boolean getActive() {
         return this.config.getBoolean(Paths.ACTIVE);
     }
 
-    public Vector getVector() {
-        YamlVector vector = new YamlVector(this.config, "");
-        return new SerializableVector(vector.getVectorMap()).getVector();
+    public Location getLocation() {
+        YamlVector yv = new YamlVector(this.config, Paths.LOCATION);
+        SerializableVector sv = new SerializableVector(yv.getVectorMap());
+        Vector vector = sv.getVector();
+        return new Location(this.world, vector.getX(), vector.getY(), vector.getZ());
     }
 
     public int getAmount() {
@@ -80,5 +90,9 @@ public class ConfigParameters {
 
     public boolean getCreateEgg() {
         return this.config.getBoolean(Paths.CREATE_EGG);
+    }
+
+    public ConfigAccessor getConfigAccessor() {
+        return this.configAccessor;
     }
 }

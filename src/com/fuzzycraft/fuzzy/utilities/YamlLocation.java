@@ -9,6 +9,8 @@ import org.bukkit.configuration.file.FileConfiguration;
  * @author Allen Flickinger (allen.flickinger@gmail.com)
  */
 
+
+@Deprecated
 public class YamlLocation {
 
     private FileConfiguration config;

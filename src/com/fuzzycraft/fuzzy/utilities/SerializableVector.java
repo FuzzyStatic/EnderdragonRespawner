@@ -1,10 +1,10 @@
 package com.fuzzycraft.fuzzy.utilities;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.util.Vector;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.util.Vector;
 
 /**
  * @author Allen Flickinger (allen.flickinger@gmail.com)
