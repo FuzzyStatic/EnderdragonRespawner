@@ -1,6 +1,7 @@
 package com.fuzzycraft.fuzzy;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 
 import com.fuzzycraft.fuzzy.utilities.ConfigParameters;
@@ -26,7 +27,11 @@ public class EnderdragonRespawner extends JavaPlugin {
         // Check Directory Structure
         this.plugin.getLogger().log(Level.INFO, "Checking Directory Structure");
         DirectoryStructure ds = new DirectoryStructure(this);
-        ds.createDirectoryStructure();
+        try {
+            ds.createDirectoryStructure();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Create Default Configurations
         ds.createWorldDefaultConfigurations();
@@ -39,7 +44,7 @@ public class EnderdragonRespawner extends JavaPlugin {
 
                         if (world != null) {
                             for (File file : worldsFile.listFiles()) {
-                                if (file.getName().equals(DirectoryStructure.CONFIG_NAME) && file.isFile()) {
+                                if (file.getName().equals(DirectoryStructure.FILE_CONFIG) && file.isFile()) {
                                     ConfigParameters cp = new ConfigParameters(plugin, world, file.toString());
 
                                     if (cp.getActive()) {

@@ -1,11 +1,13 @@
 package com.fuzzycraft.fuzzy.listeners;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fuzzycraft.fuzzy.utilities.DirectoryStructure;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -42,7 +44,9 @@ public class EnderdragonCrystals implements Listener {
             list.add(entity.getLocation());
         }
 
-        PrintWriter pw = new PrintWriter(new FileOutputStream("plugin/Enderdragonspawner/worlds/world_the_end/data/crystals"));
+        String filename = DirectoryStructure.getWorldsDirectoryPath() + File.separator + "world_the_end" + File.separator + "data" + File.separator + "crystal.data";
+
+        PrintWriter pw = new PrintWriter(new FileOutputStream(filename));
         for (Location location : list)
             pw.println(location);
         pw.close();
