@@ -1,9 +1,9 @@
 package com.fuzzycraft.fuzzy.utilities;
 
-import org.bukkit.configuration.file.FileConfiguration;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  * @author Allen Flickinger (allen.flickinger@gmail.com)
