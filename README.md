@@ -1,6 +1,8 @@
 # EnderdragonRespawner
 
-A Minecraft plugin API (sans commands/configurations) that will respawn the Enderdragon in **world_the_end** every **6 hours** or upon server load if no Enderdragon exists in world_the_end. Also, prevents spawning of Enderdragon portal.
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/FuzzyStatic)
+
+A Minecraft plugin that will respawn the Enderdragon (or Enderdragons) on a time cycle.
 
 ```yaml
 active: true
