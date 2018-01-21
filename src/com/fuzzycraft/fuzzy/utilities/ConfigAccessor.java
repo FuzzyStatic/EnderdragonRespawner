@@ -12,54 +12,57 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ConfigAccessor {
 
-    private final String filename;
-    private final JavaPlugin plugin;
+  private final String filename;
+  private final JavaPlugin plugin;
 
-    private File configFile;
-    private FileConfiguration fileConfiguration;
+  private File configFile;
+  private FileConfiguration fileConfiguration;
 
-    public ConfigAccessor(JavaPlugin plugin, String filename) {
-        if (!plugin.isEnabled()) {
-            throw new IllegalArgumentException("Plugin must be enabled!");
-        }
-
-        this.plugin = plugin;
-        this.filename = filename;
-        this.configFile = new File(this.filename);
+  public ConfigAccessor(JavaPlugin plugin, String filename) {
+    if (!plugin.isEnabled()) {
+      throw new IllegalArgumentException("Plugin must be enabled!");
     }
 
-    public void reloadConfig() {
-        this.fileConfiguration = YamlConfiguration.loadConfiguration(this.configFile);
+    this.plugin = plugin;
+    this.filename = filename;
+    this.configFile = new File(this.filename);
+  }
 
-        // Look for defaults in the jar
-        InputStream defConfigStream = plugin.getResource(filename);
-        if (defConfigStream != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream));
-            fileConfiguration.setDefaults(defConfig);
-        }
+  public void reloadConfig() {
+    this.fileConfiguration =
+        YamlConfiguration.loadConfiguration(this.configFile);
+
+    // Look for defaults in the jar
+    InputStream defConfigStream = plugin.getResource(filename);
+    if (defConfigStream != null) {
+      YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(
+          new InputStreamReader(defConfigStream));
+      fileConfiguration.setDefaults(defConfig);
+    }
+  }
+
+  public FileConfiguration getConfig() {
+    if (this.fileConfiguration == null) {
+      this.reloadConfig();
     }
 
-    public FileConfiguration getConfig() {
-        if (this.fileConfiguration == null) {
-            this.reloadConfig();
-        }
+    return this.fileConfiguration;
+  }
 
-        return this.fileConfiguration;
+  public void saveConfig() {
+    if (this.fileConfiguration != null || this.configFile != null) {
+      try {
+        getConfig().save(this.configFile);
+      } catch (IOException ex) {
+        plugin.getLogger().log(Level.SEVERE,
+                               "Could not save config to " + configFile, ex);
+      }
     }
+  }
 
-    public void saveConfig() {
-        if (this.fileConfiguration != null || this.configFile != null) {
-            try {
-                getConfig().save(this.configFile);
-            } catch (IOException ex) {
-                plugin.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
-            }
-        }
+  public void saveDefaultConfig() {
+    if (!this.configFile.exists()) {
+      this.plugin.saveResource(this.filename, false);
     }
-
-    public void saveDefaultConfig() {
-        if (!this.configFile.exists()) {
-            this.plugin.saveResource(this.filename, false);
-        }
-    }
+  }
 }

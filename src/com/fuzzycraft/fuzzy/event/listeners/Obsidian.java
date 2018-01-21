@@ -1,4 +1,4 @@
-package com.fuzzycraft.fuzzy.listeners;
+package com.fuzzycraft.fuzzy.event.listeners;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import com.fuzzycraft.fuzzy.EnderdragonRespawner;
-import com.fuzzycraft.fuzzy.utilities.DirectoryStructure;
+import com.fuzzycraft.fuzzy.event.DirectoryStructure;
 
 /**
  * @author Allen Flickinger (allen.flickinger@gmail.com)

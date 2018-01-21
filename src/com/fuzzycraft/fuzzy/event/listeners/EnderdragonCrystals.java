@@ -2,10 +2,10 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:10:39
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-18 10:11:22
+ * @Last Modified time: 2018-01-20 22:41:45
  */
 
-package com.fuzzycraft.fuzzy.listeners;
+package com.fuzzycraft.fuzzy.event.listeners;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,23 +24,24 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.fuzzycraft.fuzzy.utilities.DirectoryStructure;
+import com.fuzzycraft.fuzzy.event.files.ConfigTree;
+import com.fuzzycraft.fuzzy.event.files.Name;
 
 public class EnderdragonCrystals implements Listener {
 
   public JavaPlugin plugin;
+  private ConfigTree ct;
   private World world;
   private List<Location> list = new ArrayList<Location>();
   private String filename;
 
   public EnderdragonCrystals(JavaPlugin plugin, World world) {
     this.plugin = plugin;
+    this.ct = new ConfigTree(this.plugin);
     this.world = world;
-    this.filename = DirectoryStructure.getWorldsDirectoryPath() +
-                    File.separator + this.world.getName() + File.separator +
-                    DirectoryStructure.DIR_DATA + File.separator +
-                    DirectoryStructure.FILE_CRYSTAL;
+    this.filename = this.ct.getWorldsDirectory().toString() + File.separator +
+                    this.world.getName() + File.separator + Name.DIR_DATA +
+                    File.separator + Name.DAT_CRYSTAL;
   }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

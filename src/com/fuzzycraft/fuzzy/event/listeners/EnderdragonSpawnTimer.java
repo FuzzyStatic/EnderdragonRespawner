@@ -2,10 +2,10 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:11:30
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-20 18:32:03
+ * @Last Modified time: 2018-01-20 21:02:55
  */
 
-package com.fuzzycraft.fuzzy.listeners;
+package com.fuzzycraft.fuzzy.event.listeners;
 
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.event.EventHandler;

@@ -2,8 +2,9 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 17:06:03
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-20 18:14:25
+ * @Last Modified time: 2018-01-20 22:45:27
  */
+
 package com.fuzzycraft.fuzzy.event;
 
 import org.bukkit.ChatColor;
@@ -12,28 +13,29 @@ import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.fuzzycraft.fuzzy.utilities.ConfigParameters;
+import com.fuzzycraft.fuzzy.event.files.Config;
 
 public class Enderdragon {
-
   private JavaPlugin plugin;
-  private ConfigParameters cp;
+  private Config c;
 
-  public Enderdragon(JavaPlugin plugin) { this.plugin = plugin; }
+  public Enderdragon(JavaPlugin plugin, Config c) {
+    this.plugin = plugin;
+    this.c = c;
+  }
 
   public void spawn() {
-    for (int i = 0; i < this.cp.getAmount(); i++) {
-      this.cp.getWorld().spawnEntity(this.cp.getLocation(),
-                                     EntityType.ENDER_DRAGON);
+    for (int i = 0; i < this.c.getAmount(); i++) {
+      this.c.getWorld().spawnEntity(this.c.getLocation(),
+                                    EntityType.ENDER_DRAGON);
     }
 
     this.plugin.getServer().broadcastMessage(ChatColor.DARK_RED +
-                                             this.cp.getMsg());
+                                             this.c.getMsg());
   }
 
   public boolean exists() {
-    for (Entity entity : this.cp.getWorld().getEntities()) {
+    for (Entity entity : this.c.getWorld().getEntities()) {
       if (entity instanceof EnderDragon && !entity.isDead()) {
         return true;
       }
@@ -46,7 +48,7 @@ public class Enderdragon {
   public int removeAll() {
     int entityCounter = 0;
 
-    for (Entity entity : this.cp.getWorld().getEntities()) {
+    for (Entity entity : this.c.getWorld().getEntities()) {
       if (entity instanceof EnderDragon && !entity.isDead()) {
         entity.remove();
         entityCounter++;
@@ -70,5 +72,5 @@ public class Enderdragon {
     return entityCounter;
   }
 
-  public ConfigParameters getConfigParameters() { return this.cp; }
+  public Config getConfigParameters() { return this.c; }
 }
