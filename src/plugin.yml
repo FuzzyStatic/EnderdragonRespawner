@@ -1,3 +1,17 @@
 name:  EnderdragonRespawner
 main:  com.fuzzycraft.fuzzy.EnderdragonRespawner
-version:  1.5
+version:  2.0.0
+commands:
+    erstart:
+        description: Start Enderdragon event
+        permission: enderdragonrespawner.event.start
+    erstop:
+        description: Start Enderdragon event
+        permission: enderdragonrespawner.event.stop
+permissions:
+    enderdragonrespawner.event.start:
+        description: Let's a player start an event
+        default: true
+    enderdragonrespawner.event.stop:
+        description: Let's a player stop an event
+        default: true

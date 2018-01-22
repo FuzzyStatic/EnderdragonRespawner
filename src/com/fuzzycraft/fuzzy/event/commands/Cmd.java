@@ -8,7 +8,7 @@
 package com.fuzzycraft.fuzzy.event.commands;
 
 public class Cmd {
-  public static final String START = "start";
-  public static final String STOP = "stop";
-  public static final String RESTART = "restart";
+  public static final String START = "erstart";
+  public static final String STOP = "erstop";
+  public static final String RESTART = "errestart";
 }
