@@ -13,28 +13,27 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.fuzzycraft.fuzzy.EnderdragonRespawner;
-import com.fuzzycraft.fuzzy.event.DirectoryStructure;
-
-/**
- * @author Allen Flickinger (allen.flickinger@gmail.com)
- */
+import com.fuzzycraft.fuzzy.event.files.ConfigTree;
+import com.fuzzycraft.fuzzy.event.files.Name;
+import com.fuzzycraft.fuzzy.event.files.Path;
 
 public class Obsidian implements Listener {
-
-  public EnderdragonRespawner plugin;
+  public JavaPlugin plugin;
+  private ConfigTree ct;
   private World world;
   private List<Location> list = new ArrayList<Location>();
   private String filename;
 
-  public Obsidian(EnderdragonRespawner plugin, World world) {
+  public Obsidian(JavaPlugin plugin, World world) {
     this.plugin = plugin;
+    this.ct = new ConfigTree(this.plugin);
     this.world = world;
-    this.filename = DirectoryStructure.getWorldsDirectoryPath() +
-                    File.separator + this.world.getName() + File.separator +
-                    DirectoryStructure.DIR_DATA + File.separator +
-                    DirectoryStructure.FILE_OBSIDIAN;
+    this.filename = this.ct.getWorldsDirectory().toString() + File.separator +
+                    this.world.getName() + File.separator + Name.DIR_DATA +
+                    File.separator + Name.DAT_OBSIDIAN;
   }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

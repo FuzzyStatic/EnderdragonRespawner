@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-20 22:34:54
+ * @Last Modified time: 2018-01-21 22:34:35
  */
 
 package com.fuzzycraft.fuzzy.event.files;
@@ -11,9 +11,7 @@ import com.fuzzycraft.fuzzy.utilities.ConfigAccessor;
 import com.fuzzycraft.fuzzy.utilities.SerializableVector;
 import com.fuzzycraft.fuzzy.utilities.YamlVector;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
-
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,7 +20,6 @@ import org.bukkit.util.Vector;
 
 public class Config extends ConfigTree {
   private JavaPlugin plugin;
-  private ConfigAccessor configAccessor;
   private FileConfiguration config;
   private World world;
 
@@ -35,25 +32,6 @@ public class Config extends ConfigTree {
     }
 
     this.world = world;
-    this.configAccessor =
-        new ConfigAccessor(plugin, getWorldConfigPath().toString());
-    this.config = configAccessor.getConfig();
-  }
-
-  public void setDefaults() {
-    this.config.set(Path.ACTIVE, Parameter.ACTIVE);
-    this.config.set(Path.SPAWNLOCATION,
-                    new SerializableVector(
-                        new Vector(Parameter.X, Parameter.Y, Parameter.Z))
-                        .serialize());
-    this.config.set(Path.AMOUNT, Parameter.AMOUNT);
-    this.config.set(Path.TIME, Parameter.TIME);
-    this.config.set(Path.MSG, Parameter.MSG);
-    this.config.set(Path.RESPAWN_CRYSTALS, Parameter.RESPAWN_CRYSTALS);
-    this.config.set(Path.RESPAWN_OBSIDIAN, Parameter.RESPAWN_OBSIDIAN);
-    this.config.set(Path.CREATE_PORTAL, Parameter.CREATE_PORTAL);
-    this.config.set(Path.CREATE_EGG, Parameter.CREATE_EGG);
-    this.configAccessor.saveConfig();
   }
 
   public World getWorld() { return this.world; }
@@ -90,23 +68,22 @@ public class Config extends ConfigTree {
     return this.config.getBoolean(Path.CREATE_EGG);
   }
 
-  public void createWorldDefaultConfigurations() {
-    for (World world : this.plugin.getServer().getWorlds()) {
-      File file =
-          new File(super.getWorldsDirectory().toString() + File.separator +
-                   world.getName() + File.separator + Name.YML_CONFIG);
+  public boolean createWorldDefConfig() {
+    File file =
+        new File(super.getWorldsDirectory().toString() + File.separator +
+                 this.world.getName() + File.separator + Name.YML_CONFIG);
 
-      if (!file.exists()) {
-        this.plugin.getLogger().log(Level.INFO,
-                                    "Creating Default Configuration for " +
-                                        world.getName());
-        this.setDefaults();
-      }
+    if (!file.exists()) {
+      this.plugin.getLogger().log(
+          Level.INFO, "Creating default configuration for " + world.getName());
+
+      ConfigAccessor configAccessor =
+          new ConfigAccessor(plugin, file.toString());
+      super.setDefaults(configAccessor);
+
+      return true;
     }
-  }
 
-  public File getWorldConfigPath() {
-    return new File(super.getWorldsDirectory().toString() + File.separator +
-                    this.world.getName() + File.separator + Name.YML_CONFIG);
+    return false;
   }
 }

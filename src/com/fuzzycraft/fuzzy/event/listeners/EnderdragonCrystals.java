@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:10:39
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-20 22:41:45
+ * @Last Modified time: 2018-01-21 13:16:12
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
@@ -28,7 +28,6 @@ import com.fuzzycraft.fuzzy.event.files.ConfigTree;
 import com.fuzzycraft.fuzzy.event.files.Name;
 
 public class EnderdragonCrystals implements Listener {
-
   public JavaPlugin plugin;
   private ConfigTree ct;
   private World world;

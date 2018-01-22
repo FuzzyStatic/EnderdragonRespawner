@@ -3,7 +3,7 @@
     <groupId>localdomain.localhost.tutorial</groupId>
     <artifactId>java-archive</artifactId>
     <packaging>jar</packaging>
-    <version>1.5.0</version>
+    <version>2.0.0</version>
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -32,6 +32,16 @@
     </dependencies>
     <build>
         <finalName>EnderdragonRespawner</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
         <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>
