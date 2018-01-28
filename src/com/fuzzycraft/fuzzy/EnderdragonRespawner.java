@@ -2,16 +2,16 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 21:02:33
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-21 22:55:48
+ * @Last Modified time: 2018-01-28 14:16:39
  */
 
 package com.fuzzycraft.fuzzy;
 
-import com.fuzzycraft.fuzzy.event.Enderdragon;
+import com.fuzzycraft.fuzzy.event.Management;
+import com.fuzzycraft.fuzzy.event.Structure;
 import com.fuzzycraft.fuzzy.event.commands.Cmd;
 import com.fuzzycraft.fuzzy.event.commands.Start;
 import com.fuzzycraft.fuzzy.event.commands.Stop;
-import com.fuzzycraft.fuzzy.event.files.Config;
 import com.fuzzycraft.fuzzy.event.files.ConfigTree;
 import com.fuzzycraft.fuzzy.event.files.Name;
 import com.fuzzycraft.fuzzy.event.listeners.EnderdragonCrystals;
@@ -57,45 +57,46 @@ public class EnderdragonRespawner extends JavaPlugin {
       public void run() {
         HashMap<World, File> hm = ct.getWorldDirectories();
 
-        for (World world : hm.keySet()) {
-          Config c = new Config(plugin, world);
-          File file = hm.get(world);
+        for (World w : hm.keySet()) {
+          File file = hm.get(w);
 
           if (file.getName().equals(Name.YML_CONFIG) && file.isFile()) {
-            if (c.getActive()) {
+            Management m = new Management(plugin, w);
+            HashMap<World, Structure> eventMap = m.getEventMap();
+            Structure s = eventMap.get(w);
+
+            if (s.getConfig().getActive()) {
               EnderdragonCrystals ec = null;
               Obsidian o = null;
 
               plugin.getLogger().log(Level.INFO,
                                      "Activating Configuration For World: " +
-                                         world.getName());
+                                         w.getName());
               PluginManager pm = getServer().getPluginManager();
-              Enderdragon e = new Enderdragon(plugin, c);
 
-              if (c.getRespawnCrystals()) {
+              if (s.getConfig().getRespawnCrystals()) {
                 plugin.getLogger().log(
                     Level.INFO,
                     "Activating Enderdragon Crystal Respawn For World: " +
-                        world.getName());
-                ec = new EnderdragonCrystals(plugin, c.getWorld());
+                        w.getName());
+                ec = new EnderdragonCrystals(plugin, s.getConfig().getWorld());
                 pm.registerEvents(ec, plugin);
               }
 
-              if (c.getRespawnObsidian()) {
+              if (s.getConfig().getRespawnObsidian()) {
                 plugin.getLogger().log(
-                    Level.INFO, "Activating Obsidian Respawn For World: " +
-                                    world.getName());
-                o = new Obsidian(plugin, c.getWorld());
+                    Level.INFO,
+                    "Activating Obsidian Respawn For World: " + w.getName());
+                o = new Obsidian(plugin, w);
                 pm.registerEvents(o, plugin);
               }
 
-              plugin.getLogger().log(Level.INFO,
-                                     "Activating Listeners For World: " +
-                                         world.getName());
-              pm.registerEvents(new EnderdragonSpawnTimer(plugin, e, ec, o),
+              plugin.getLogger().log(
+                  Level.INFO, "Activating Listeners For World: " + w.getName());
+              pm.registerEvents(new EnderdragonSpawnTimer(plugin, m, w),
                                 plugin);
-              pm.registerEvents(new EnderdragonPreventPortal(plugin, c),
-                                plugin);
+              pm.registerEvents(
+                  new EnderdragonPreventPortal(plugin, s.getConfig()), plugin);
             }
           }
         }

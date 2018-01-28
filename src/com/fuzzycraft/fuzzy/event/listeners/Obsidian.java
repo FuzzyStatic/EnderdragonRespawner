@@ -1,10 +1,11 @@
 package com.fuzzycraft.fuzzy.event.listeners;
 
+import com.fuzzycraft.fuzzy.event.files.ConfigTree;
+import com.fuzzycraft.fuzzy.event.files.Name;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -14,11 +15,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.fuzzycraft.fuzzy.EnderdragonRespawner;
-import com.fuzzycraft.fuzzy.event.files.ConfigTree;
-import com.fuzzycraft.fuzzy.event.files.Name;
-import com.fuzzycraft.fuzzy.event.files.Path;
 
 public class Obsidian implements Listener {
   public JavaPlugin plugin;
