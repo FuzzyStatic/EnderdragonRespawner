@@ -10,8 +10,8 @@ commands:
         permission: enderdragonrespawner.event.stop
 permissions:
     enderdragonrespawner.event.start:
-        description: Let's a player start an event
+        description: Let's a player start (or restart) an event. This will stop previous event if running.
         default: true
     enderdragonrespawner.event.stop:
-        description: Let's a player stop an event
+        description: Let's a player stop an event.
         default: true

@@ -2,15 +2,17 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.s.getConfig()om)
  * @Date: 2018-01-20 17:06:03
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-28 21:37:54
+ * @Last Modified time: 2018-01-29 15:53:46
  */
 
 package com.fuzzycraft.fuzzy.event;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import com.fuzzycraft.fuzzy.event.files.Config;
-
+import com.fuzzycraft.fuzzy.event.listeners.EnderCrystals;
+import com.fuzzycraft.fuzzy.event.listeners.Obsidian;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
@@ -21,76 +23,84 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Management {
   private static HashMap<World, Structure> eventMap;
 
-  private JavaPlugin plugin;
-  private World w;
-  private Structure s;
+  // Spawn the number of Enderdragons required for this event
+  public static int spawnEnderdragons(JavaPlugin plugin, World w) {
+    Structure s = eventMap.get(w);
+    int added = 0;
 
-  public Management(JavaPlugin plugin, World w) {
-    this.plugin = plugin;
-    this.w = w;
-    this.s = eventMap.get(w);
-
-    // If Structure doesn't exist, initialize it
-    if (s == null) {
-      Config c = new Config(plugin, this.w);
-      this.s.setConfig(c);
-      eventMap.put(this.w, this.s);
-    }
-  }
-
-  public void spawnEnderdragons() {
-    for (int i = 0; i < this.s.getConfig().getAmount(); i++) {
-      this.s.getConfig().getWorld().spawnEntity(
-          this.s.getConfig().getLocation(), EntityType.ENDER_DRAGON);
+    for (int i = 0; i < s.getConfig().getAmount(); i++) {
+      w.spawnEntity(s.getConfig().getLocation(), EntityType.ENDER_DRAGON);
+      added++;
     }
 
-    this.plugin.getServer().broadcastMessage(ChatColor.DARK_RED +
-                                             this.s.getConfig().getMsg());
-  }
+    plugin.getServer().broadcastMessage(ChatColor.DARK_RED +
+                                        s.getConfig().getMsg());
 
-  public boolean enderdragonsExist() {
-    for (Entity entity : this.s.getConfig().getWorld().getEntities()) {
-      if (entity instanceof EnderDragon && !entity.isDead()) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  // Remove all Enderdragon entities from ConfigParameters world
-  public int removeAllEnderdragons() {
-    int entityCounter = 0;
-
-    for (Entity entity : this.s.getConfig().getWorld().getEntities()) {
-      if (entity instanceof EnderDragon && !entity.isDead()) {
-        entity.remove();
-        entityCounter++;
-      }
-    }
-
-    return entityCounter;
+    return added;
   }
 
   // Remove all Enderdragon entities from specified world
-  public static int removeAll(World world) {
-    int entityCounter = 0;
+  public static int removeAllEnderdragons(World w) {
+    int removed = 0;
 
-    for (Entity entity : world.getEntities()) {
+    for (Entity entity : w.getEntities()) {
       if (entity instanceof EnderDragon && !entity.isDead()) {
         entity.remove();
-        entityCounter++;
+        removed++;
       }
     }
 
-    return entityCounter;
+    return removed;
   }
-
-  public Config getConfigParameters() { return this.s.getConfig(); }
 
   public static HashMap<World, Structure> getEventMap() { return eventMap; }
 
   public static boolean isEventActive(World w) {
     return Management.getEventMap().containsKey(w);
+  }
+
+  public static Structure add(JavaPlugin plugin, World w) {
+    Config c = new Config(plugin, w);
+    Structure s = eventMap.get(w);
+    s.setConfig(c);
+    return eventMap.put(w, s);
+  }
+
+  public static int stop(JavaPlugin plugin, World w) {
+    Structure s = eventMap.get(w);
+    Config c = s.getConfig();
+
+    // Remove all Enderdragons
+    int removed = removeAllEnderdragons(w);
+
+    // Respawn any crystals
+    if (c.getRespawnCrystals()) {
+      try {
+        EnderCrystals.respawn(plugin, w);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    // Respawn obsidian
+    if (c.getRespawnObsidian()) {
+      try {
+        Obsidian.respawn(plugin, w);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    // Remove event from map
+    eventMap.remove(w);
+
+    return removed;
+  }
+
+  public static int start(JavaPlugin plugin, World w) {
+    add(plugin, w);
+    int added = spawnEnderdragons(plugin, w);
+
+    return added;
   }
 }

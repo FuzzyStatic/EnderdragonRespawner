@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 16:57:18
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-28 21:36:58
+ * @Last Modified time: 2018-01-29 13:41:09
  */
 
 package com.fuzzycraft.fuzzy.event.commands;
@@ -33,15 +33,23 @@ public class Start implements CommandExecutor {
           World w = Bukkit.getServer().getWorld(sWorld);
 
           if (w != null) {
-            Management m = new Management(this.plugin, w);
-            int removed = m.removeAllEnderdragons();
-
+            int removed = Management.stop(this.plugin, w);
             switch (removed) {
             case 0:
               sender.sendMessage("No Enderdragons found/removed");
               break;
             default:
               sender.sendMessage(removed + " Enderdragons found/removed");
+              break;
+            }
+
+            int added = Management.start(this.plugin, w);
+            switch (added) {
+            case 0:
+              sender.sendMessage("No Enderdragons spawned");
+              break;
+            default:
+              sender.sendMessage(removed + " Enderdragons spawned");
               break;
             }
           }

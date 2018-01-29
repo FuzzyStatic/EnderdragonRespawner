@@ -2,15 +2,17 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:11:30
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-28 21:31:20
+ * @Last Modified time: 2018-01-29 15:54:07
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
 
+import java.io.IOException;
+
 import com.fuzzycraft.fuzzy.event.Management;
 import com.fuzzycraft.fuzzy.event.Structure;
 import com.fuzzycraft.fuzzy.event.files.Config;
-import java.io.IOException;
+
 import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
@@ -49,7 +51,7 @@ public class EnderdragonSpawnTimer implements Listener {
     new BukkitRunnable() {
       public void run() {
         try {
-          EnderdragonCrystals.respawn(plugin, w);
+          EnderCrystals.respawn(plugin, w);
         } catch (IOException e) {
           e.printStackTrace();
         }
@@ -71,10 +73,7 @@ public class EnderdragonSpawnTimer implements Listener {
     // Create the task anonymously to spawn Enderdragon and schedule to run it
     // once after specified time.
     new BukkitRunnable() {
-      public void run() {
-        Management m = new Management(plugin, w);
-        m.spawnEnderdragons();
-      }
+      public void run() { Management.spawnEnderdragons(plugin, w); }
     }
         .runTaskLater(this.plugin, c.getTime() * 20);
   }

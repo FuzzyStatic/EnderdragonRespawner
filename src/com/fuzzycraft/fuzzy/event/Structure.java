@@ -2,25 +2,25 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 17:06:03
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-28 14:15:28
+ * @Last Modified time: 2018-01-29 12:34:23
  */
 
 package com.fuzzycraft.fuzzy.event;
 
 import com.fuzzycraft.fuzzy.event.files.Config;
-import com.fuzzycraft.fuzzy.event.listeners.EnderdragonCrystals;
+import com.fuzzycraft.fuzzy.event.listeners.EnderCrystals;
 import com.fuzzycraft.fuzzy.event.listeners.EnderdragonPreventPortal;
 import com.fuzzycraft.fuzzy.event.listeners.EnderdragonSpawnTimer;
 import com.fuzzycraft.fuzzy.event.listeners.Obsidian;
 
 public class Structure {
-  private EnderdragonCrystals ec;
+  private EnderCrystals ec;
   private EnderdragonPreventPortal epp;
   private EnderdragonSpawnTimer est;
   private Obsidian o;
   private Config c;
 
-  public Structure(EnderdragonCrystals ec, EnderdragonPreventPortal epp,
+  public Structure(EnderCrystals ec, EnderdragonPreventPortal epp,
                    EnderdragonSpawnTimer est, Obsidian o, Config c) {
     this.ec = ec;
     this.epp = epp;
@@ -29,7 +29,7 @@ public class Structure {
     this.c = c;
   }
 
-  public void setEnderdragonCrystals(EnderdragonCrystals ec) { this.ec = ec; }
+  public void setEnderCrystals(EnderCrystals ec) { this.ec = ec; }
 
   public void setEnderdragonPreventPortal(EnderdragonPreventPortal epp) {
     this.epp = epp;
@@ -43,7 +43,7 @@ public class Structure {
 
   public void setConfig(Config c) { this.c = c; }
 
-  public EnderdragonCrystals getEnderdragonCrystals() { return this.ec; }
+  public EnderCrystals getEnderCrystals() { return this.ec; }
 
   public EnderdragonPreventPortal getEnderdragonPreventPortal() {
     return this.epp;

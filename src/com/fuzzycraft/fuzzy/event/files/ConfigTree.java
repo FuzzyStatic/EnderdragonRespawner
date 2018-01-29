@@ -2,23 +2,23 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-21 22:47:06
+ * @Last Modified time: 2018-01-29 15:54:16
  */
 
 package com.fuzzycraft.fuzzy.event.files;
 
-import com.fuzzycraft.fuzzy.utilities.ConfigAccessor;
-import com.fuzzycraft.fuzzy.utilities.SerializableVector;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
+
+import com.fuzzycraft.fuzzy.utilities.ConfigAccessor;
+import com.fuzzycraft.fuzzy.utilities.SerializableVector;
+
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 public class ConfigTree {
   private JavaPlugin plugin;

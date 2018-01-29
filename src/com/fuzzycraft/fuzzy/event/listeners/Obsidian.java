@@ -63,6 +63,8 @@ public class Obsidian implements Listener {
         block.setType(Material.OBSIDIAN);
       }
     }*/
+
+    in.close();
   }
 
   public List<Location> getLocations() { return this.list; }

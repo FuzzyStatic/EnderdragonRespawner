@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:10:39
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-28 21:24:59
+ * @Last Modified time: 2018-01-29 12:33:59
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
@@ -32,11 +32,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class EnderdragonCrystals implements Listener {
+public class EnderCrystals implements Listener {
   public JavaPlugin plugin;
   private List<Location> list = new ArrayList<Location>();
 
-  public EnderdragonCrystals(JavaPlugin plugin) { this.plugin = plugin; }
+  public EnderCrystals(JavaPlugin plugin) { this.plugin = plugin; }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
   public void onEntityDamage(EntityDamageEvent event)
