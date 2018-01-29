@@ -2,16 +2,18 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-21 22:34:35
+ * @Last Modified time: 2018-01-29 16:55:46
  */
 
 package com.fuzzycraft.fuzzy.event.files;
 
+import java.io.File;
+import java.util.logging.Level;
+
 import com.fuzzycraft.fuzzy.utilities.ConfigAccessor;
 import com.fuzzycraft.fuzzy.utilities.SerializableVector;
 import com.fuzzycraft.fuzzy.utilities.YamlVector;
-import java.io.File;
-import java.util.logging.Level;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,66 +22,57 @@ import org.bukkit.util.Vector;
 
 public class Config extends ConfigTree {
   private JavaPlugin plugin;
-  private FileConfiguration config;
-  private World world;
+  private World w;
+  private FileConfiguration c;
 
-  public Config(JavaPlugin plugin, World world) {
+  public Config(JavaPlugin plugin, World w) {
     super(plugin);
     this.plugin = plugin;
-
-    if (!this.plugin.isEnabled()) {
-      throw new IllegalArgumentException("Plugin must be initialized!");
-    }
-
-    this.world = world;
+    this.w = w;
+    this.c = new ConfigAccessor(this.plugin, getWorldConfigPath(w)).getConfig();
   }
 
-  public World getWorld() { return this.world; }
+  public World getWorld() { return this.w; }
 
-  public boolean getActive() { return this.config.getBoolean(Path.ACTIVE); }
+  public boolean getActive() { return this.c.getBoolean(Path.ACTIVE); }
 
   public Location getLocation() {
-    YamlVector yv = new YamlVector(this.config, Path.SPAWNLOCATION);
+    YamlVector yv = new YamlVector(this.c, Path.SPAWNLOCATION);
     SerializableVector sv = new SerializableVector(yv.getVectorMap());
     Vector vector = sv.getVector();
-    return new Location(this.world, vector.getX(), vector.getY(),
-                        vector.getZ());
+    return new Location(this.w, vector.getX(), vector.getY(), vector.getZ());
   }
 
-  public int getAmount() { return this.config.getInt(Path.AMOUNT); }
+  public int getAmount() { return this.c.getInt(Path.AMOUNT); }
 
-  public int getTime() { return this.config.getInt(Path.TIME); }
+  public int getTime() { return this.c.getInt(Path.TIME); }
 
-  public String getMsg() { return this.config.getString(Path.MSG); }
+  public String getMsg() { return this.c.getString(Path.MSG); }
 
   public boolean getRespawnCrystals() {
-    return this.config.getBoolean(Path.RESPAWN_CRYSTALS);
+    return this.c.getBoolean(Path.RESPAWN_CRYSTALS);
   }
 
   public boolean getRespawnObsidian() {
-    return this.config.getBoolean(Path.RESPAWN_OBSIDIAN);
+    return this.c.getBoolean(Path.RESPAWN_OBSIDIAN);
   }
 
   public boolean getCreatePortal() {
-    return this.config.getBoolean(Path.CREATE_PORTAL);
+    return this.c.getBoolean(Path.CREATE_PORTAL);
   }
 
-  public boolean getCreateEgg() {
-    return this.config.getBoolean(Path.CREATE_EGG);
-  }
+  public boolean getCreateEgg() { return this.c.getBoolean(Path.CREATE_EGG); }
 
   public boolean createWorldDefConfig() {
-    File file =
-        new File(super.getWorldsDirectory().toString() + File.separator +
-                 this.world.getName() + File.separator + Name.YML_CONFIG);
+    File f = new File(super.getWorldsDirectory().toString() + File.separator +
+                      this.w.getName() + File.separator + Name.YML_CONFIG);
 
-    if (!file.exists()) {
+    if (!f.exists()) {
       this.plugin.getLogger().log(
-          Level.INFO, "Creating default configuration for " + world.getName());
+          Level.INFO, "Creating default configuration for " + w.getName());
 
-      ConfigAccessor configAccessor =
-          new ConfigAccessor(plugin, file.toString());
-      super.setDefaults(configAccessor);
+      ConfigAccessor ca = new ConfigAccessor(this.plugin, f.toString());
+      super.setDefaults(ca);
 
       return true;
     }

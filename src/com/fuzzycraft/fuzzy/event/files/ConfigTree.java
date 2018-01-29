@@ -2,14 +2,13 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-29 15:54:16
+ * @Last Modified time: 2018-01-29 17:17:48
  */
 
 package com.fuzzycraft.fuzzy.event.files;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.logging.Level;
 
 import com.fuzzycraft.fuzzy.utilities.ConfigAccessor;
@@ -116,60 +115,39 @@ public class ConfigTree {
 
   public File getWorldsDirectory() { return worldsDirectory; }
 
-  public File getWorldConfigPath(World world) {
-    return new File(getWorldsDirectory().toString() + File.separator +
-                    world.getName() + File.separator + Name.YML_CONFIG);
+  public String getWorldConfigPath(World w) {
+    return getWorldsDirectory().toString() + File.separator + w.getName() +
+        File.separator + Name.YML_CONFIG;
   }
 
-  public HashMap<World, File> getWorldDirectories() {
-    HashMap<World, File> hm = new HashMap<World, File>();
+  public void createAllWorldsDefaultConfiguration() {
+    for (World w : this.plugin.getServer().getWorlds()) {
+      File file = new File(getWorldsDirectory().toString() + File.separator +
+                           w.getName() + File.separator + Name.YML_CONFIG);
 
-    for (File worldsFile : getWorldsDirectory().listFiles()) {
-      if (worldsFile.isDirectory()) {
-        World world = plugin.getServer().getWorld(worldsFile.getName());
-
-        if (world != null) {
-          hm.put(world, worldsFile);
-        } else {
-          this.plugin.getLogger().log(Level.WARNING, "World " +
-                                                         worldsFile.getName() +
-                                                         " Does Not Exist");
-        }
+      if (!file.exists()) {
+        this.plugin.getLogger().log(
+            Level.INFO, "Creating Default Configuration for " + w.getName());
+        Config c = new Config(plugin, w);
+        c.createWorldDefConfig();
       }
     }
-
-    return hm;
   }
 
-  public void setDefaults(ConfigAccessor configAccessor) {
-    FileConfiguration config = configAccessor.getConfig();
-    config.set(Path.ACTIVE, Parameter.ACTIVE);
-    config.set(Path.SPAWNLOCATION,
-               new SerializableVector(
-                   new Vector(Parameter.X, Parameter.Y, Parameter.Z))
-                   .serialize());
-    config.set(Path.AMOUNT, Parameter.AMOUNT);
-    config.set(Path.TIME, Parameter.TIME);
-    config.set(Path.MSG, Parameter.MSG);
-    config.set(Path.RESPAWN_CRYSTALS, Parameter.RESPAWN_CRYSTALS);
-    config.set(Path.RESPAWN_OBSIDIAN, Parameter.RESPAWN_OBSIDIAN);
-    config.set(Path.CREATE_PORTAL, Parameter.CREATE_PORTAL);
-    config.set(Path.CREATE_EGG, Parameter.CREATE_EGG);
-    configAccessor.saveConfig();
-  }
-
-  public boolean createWorldSampleConfig() {
-    File file = new File(getWorldsDirectory().toString() + File.separator +
-                         Name.YML_CONFIG);
-    ConfigAccessor configAccessor = new ConfigAccessor(plugin, file.toString());
-
-    if (!file.exists()) {
-      this.plugin.getLogger().log(Level.INFO, "Creating sample configuration");
-      setDefaults(configAccessor);
-
-      return true;
-    }
-
-    return false;
+  public void setDefaults(ConfigAccessor ca) {
+    FileConfiguration c = ca.getConfig();
+    c.set(Path.ACTIVE, Parameter.ACTIVE);
+    c.set(Path.SPAWNLOCATION,
+          new SerializableVector(
+              new Vector(Parameter.X, Parameter.Y, Parameter.Z))
+              .serialize());
+    c.set(Path.AMOUNT, Parameter.AMOUNT);
+    c.set(Path.TIME, Parameter.TIME);
+    c.set(Path.MSG, Parameter.MSG);
+    c.set(Path.RESPAWN_CRYSTALS, Parameter.RESPAWN_CRYSTALS);
+    c.set(Path.RESPAWN_OBSIDIAN, Parameter.RESPAWN_OBSIDIAN);
+    c.set(Path.CREATE_PORTAL, Parameter.CREATE_PORTAL);
+    c.set(Path.CREATE_EGG, Parameter.CREATE_EGG);
+    ca.saveConfig();
   }
 }

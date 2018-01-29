@@ -11,7 +11,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ConfigAccessor {
-
   private final String filename;
   private final JavaPlugin plugin;
 

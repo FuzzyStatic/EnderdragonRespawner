@@ -2,14 +2,14 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.s.getConfig()om)
  * @Date: 2018-01-20 17:06:03
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-29 15:53:46
+ * @Last Modified time: 2018-01-29 17:04:08
  */
 
 package com.fuzzycraft.fuzzy.event;
 
 import java.io.IOException;
 import java.util.HashMap;
-
+import java.util.logging.Level;
 import com.fuzzycraft.fuzzy.event.files.Config;
 import com.fuzzycraft.fuzzy.event.listeners.EnderCrystals;
 import com.fuzzycraft.fuzzy.event.listeners.Obsidian;
@@ -22,6 +22,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Management {
   private static HashMap<World, Structure> eventMap;
+
+  public Management() { eventMap = new HashMap<World, Structure>(); }
 
   // Spawn the number of Enderdragons required for this event
   public static int spawnEnderdragons(JavaPlugin plugin, World w) {
@@ -59,14 +61,24 @@ public class Management {
     return Management.getEventMap().containsKey(w);
   }
 
-  public static Structure add(JavaPlugin plugin, World w) {
-    Config c = new Config(plugin, w);
-    Structure s = eventMap.get(w);
-    s.setConfig(c);
-    return eventMap.put(w, s);
+  private static boolean add(JavaPlugin plugin, World w) {
+    if (!eventMap.containsKey(w)) {
+      Config c = new Config(plugin, w);
+      c.createWorldDefConfig();
+      Structure s = new Structure(null, c);
+      eventMap.put(w, s);
+      return true;
+    }
+
+    return false;
   }
 
   public static int stop(JavaPlugin plugin, World w) {
+    if (!eventMap.containsKey(w)) {
+      plugin.getLogger().log(Level.WARNING, "No event found for this world");
+      return 0;
+    }
+
     Structure s = eventMap.get(w);
     Config c = s.getConfig();
 
@@ -98,7 +110,12 @@ public class Management {
   }
 
   public static int start(JavaPlugin plugin, World w) {
-    add(plugin, w);
+    if (add(plugin, w)) {
+      plugin.getLogger().log(
+          Level.WARNING,
+          "No event found for this world, creating default configuration");
+    }
+
     int added = spawnEnderdragons(plugin, w);
 
     return added;

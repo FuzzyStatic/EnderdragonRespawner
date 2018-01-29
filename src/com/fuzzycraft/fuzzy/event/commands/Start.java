@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 16:57:18
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-29 13:41:09
+ * @Last Modified time: 2018-01-29 17:02:43
  */
 
 package com.fuzzycraft.fuzzy.event.commands;
@@ -34,6 +34,7 @@ public class Start implements CommandExecutor {
 
           if (w != null) {
             int removed = Management.stop(this.plugin, w);
+            sender.sendMessage("Previous event stopped");
             switch (removed) {
             case 0:
               sender.sendMessage("No Enderdragons found/removed");
@@ -44,12 +45,13 @@ public class Start implements CommandExecutor {
             }
 
             int added = Management.start(this.plugin, w);
+            sender.sendMessage("New event started");
             switch (added) {
             case 0:
               sender.sendMessage("No Enderdragons spawned");
               break;
             default:
-              sender.sendMessage(removed + " Enderdragons spawned");
+              sender.sendMessage(added + " Enderdragons spawned");
               break;
             }
           }
