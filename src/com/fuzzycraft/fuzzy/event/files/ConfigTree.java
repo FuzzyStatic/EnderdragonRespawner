@@ -129,7 +129,7 @@ public class ConfigTree {
         World world = plugin.getServer().getWorld(worldsFile.getName());
 
         if (world != null) {
-          hm.put(world, worldsFile)
+          hm.put(world, worldsFile);
         } else {
           this.plugin.getLogger().log(Level.WARNING, "World " +
                                                          worldsFile.getName() +

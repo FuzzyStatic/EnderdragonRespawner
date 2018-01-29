@@ -1,5 +1,6 @@
 package com.fuzzycraft.fuzzy.event.listeners;
 
+import com.fuzzycraft.fuzzy.event.Management;
 import com.fuzzycraft.fuzzy.event.files.ConfigTree;
 import com.fuzzycraft.fuzzy.event.files.Name;
 import java.io.*;
@@ -18,27 +19,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Obsidian implements Listener {
   public JavaPlugin plugin;
-  private ConfigTree ct;
-  private World world;
   private List<Location> list = new ArrayList<Location>();
-  private String filename;
 
-  public Obsidian(JavaPlugin plugin, World world) {
-    this.plugin = plugin;
-    this.ct = new ConfigTree(this.plugin);
-    this.world = world;
-    this.filename = this.ct.getWorldsDirectory().toString() + File.separator +
-                    this.world.getName() + File.separator + Name.DIR_DATA +
-                    File.separator + Name.DAT_OBSIDIAN;
-  }
+  public Obsidian(JavaPlugin plugin) { this.plugin = plugin; }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
   public void onBlockBreak(BlockBreakEvent event) throws FileNotFoundException {
-    Block block = event.getBlock();
+    final Block block = event.getBlock();
 
     if (block.getType() == Material.OBSIDIAN &&
-        block.getWorld().equals(this.world)) {
+        Management.isEventActive(block.getWorld())) {
       list.add(block.getLocation());
+
+      ConfigTree ct = new ConfigTree(this.plugin);
+      String filename = ct.getWorldsDirectory().toString() + File.separator +
+                        block.getWorld().getName() + File.separator +
+                        Name.DIR_DATA + File.separator + Name.DAT_OBSIDIAN;
 
       PrintWriter pw = new PrintWriter(new FileOutputStream(filename));
       for (Location location : list)
@@ -47,11 +43,15 @@ public class Obsidian implements Listener {
     }
   }
 
-  public void respawn() throws IOException {
-    BufferedReader in = new BufferedReader(new FileReader(this.filename));
+  public static void respawn(JavaPlugin plugin, World w) throws IOException {
+    ConfigTree ct = new ConfigTree(plugin);
+    String filename = ct.getWorldsDirectory().toString() + File.separator +
+                      w.getName() + File.separator + Name.DIR_DATA +
+                      File.separator + Name.DAT_CRYSTAL;
+    BufferedReader in = new BufferedReader(new FileReader(filename));
     plugin.getLogger().log(Level.INFO, "Obsidian at: " + in.readLine());
 
-    if (!this.list.isEmpty()) {
+    /*if (!this.list.isEmpty()) {
       for (Location loc : this.list) {
         Block block = loc.getBlock();
 
@@ -62,10 +62,8 @@ public class Obsidian implements Listener {
 
         block.setType(Material.OBSIDIAN);
       }
-    }
+    }*/
   }
 
   public List<Location> getLocations() { return this.list; }
-
-  public World world() { return this.world; }
 }

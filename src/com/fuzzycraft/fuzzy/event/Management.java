@@ -2,13 +2,15 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.s.getConfig()om)
  * @Date: 2018-01-20 17:06:03
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-28 14:15:15
+ * @Last Modified time: 2018-01-28 21:37:54
  */
 
 package com.fuzzycraft.fuzzy.event;
 
-import com.fuzzycraft.fuzzy.event.files.Config;
 import java.util.HashMap;
+
+import com.fuzzycraft.fuzzy.event.files.Config;
+
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
@@ -26,7 +28,6 @@ public class Management {
   public Management(JavaPlugin plugin, World w) {
     this.plugin = plugin;
     this.w = w;
-
     this.s = eventMap.get(w);
 
     // If Structure doesn't exist, initialize it
@@ -87,5 +88,9 @@ public class Management {
 
   public Config getConfigParameters() { return this.s.getConfig(); }
 
-  public HashMap<World, Structure> getEventMap() { return eventMap; }
+  public static HashMap<World, Structure> getEventMap() { return eventMap; }
+
+  public static boolean isEventActive(World w) {
+    return Management.getEventMap().containsKey(w);
+  }
 }

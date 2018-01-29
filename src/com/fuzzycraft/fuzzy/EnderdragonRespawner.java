@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 21:02:33
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-28 14:16:39
+ * @Last Modified time: 2018-01-28 21:38:30
  */
 
 package com.fuzzycraft.fuzzy;
@@ -62,44 +62,14 @@ public class EnderdragonRespawner extends JavaPlugin {
 
           if (file.getName().equals(Name.YML_CONFIG) && file.isFile()) {
             Management m = new Management(plugin, w);
-            HashMap<World, Structure> eventMap = m.getEventMap();
-            Structure s = eventMap.get(w);
-
-            if (s.getConfig().getActive()) {
-              EnderdragonCrystals ec = null;
-              Obsidian o = null;
-
-              plugin.getLogger().log(Level.INFO,
-                                     "Activating Configuration For World: " +
-                                         w.getName());
-              PluginManager pm = getServer().getPluginManager();
-
-              if (s.getConfig().getRespawnCrystals()) {
-                plugin.getLogger().log(
-                    Level.INFO,
-                    "Activating Enderdragon Crystal Respawn For World: " +
-                        w.getName());
-                ec = new EnderdragonCrystals(plugin, s.getConfig().getWorld());
-                pm.registerEvents(ec, plugin);
-              }
-
-              if (s.getConfig().getRespawnObsidian()) {
-                plugin.getLogger().log(
-                    Level.INFO,
-                    "Activating Obsidian Respawn For World: " + w.getName());
-                o = new Obsidian(plugin, w);
-                pm.registerEvents(o, plugin);
-              }
-
-              plugin.getLogger().log(
-                  Level.INFO, "Activating Listeners For World: " + w.getName());
-              pm.registerEvents(new EnderdragonSpawnTimer(plugin, m, w),
-                                plugin);
-              pm.registerEvents(
-                  new EnderdragonPreventPortal(plugin, s.getConfig()), plugin);
-            }
           }
         }
+
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new EnderdragonCrystals(plugin), plugin);
+        pm.registerEvents(new Obsidian(plugin), plugin);
+        pm.registerEvents(new EnderdragonSpawnTimer(plugin), plugin);
+        pm.registerEvents(new EnderdragonPreventPortal(plugin), plugin);
       }
     }
         .runTaskLater(this, 1);

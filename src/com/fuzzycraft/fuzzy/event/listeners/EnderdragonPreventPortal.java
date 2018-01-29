@@ -1,9 +1,21 @@
+/*
+ * @Author: Allen Flickinger (allen.flickinger@gmail.com)
+ * @Date: 2018-01-28 21:26:09
+ * @Last Modified by:   FuzzyStatic
+ * @Last Modified time: 2018-01-28 21:26:09
+ */
+
 package com.fuzzycraft.fuzzy.event.listeners;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fuzzycraft.fuzzy.event.Management;
+import com.fuzzycraft.fuzzy.event.Structure;
+import com.fuzzycraft.fuzzy.event.files.Config;
+
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
@@ -15,28 +27,24 @@ import org.bukkit.event.entity.EntityCreatePortalEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.fuzzycraft.fuzzy.event.files.Config;
-
-/**
- * @author Allen Flickinger (allen.flickinger@gmail.com)
- */
-
 public class EnderdragonPreventPortal implements Listener {
-
   private JavaPlugin plugin;
-  private Config c;
 
-  public EnderdragonPreventPortal(JavaPlugin plugin, Config c) {
-    this.plugin = plugin;
-    this.c = c;
-  }
+  public EnderdragonPreventPortal(JavaPlugin plugin) { this.plugin = plugin; }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onEntityCreatePortal(EntityCreatePortalEvent event) {
-    Entity entity = event.getEntity();
+    final Entity entity = event.getEntity();
+    final World w = entity.getWorld();
 
-    if (!(entity instanceof EnderDragon) ||
-        !(entity.getWorld() == this.c.getWorld()) || this.c.getCreatePortal()) {
+    if (!Management.isEventActive(w)) {
+      return;
+    }
+
+    final Structure s = Management.getEventMap().get(w);
+    final Config c = s.getConfig();
+
+    if (!(entity instanceof EnderDragon) || c.getCreatePortal()) {
       return;
     }
 
@@ -54,7 +62,7 @@ public class EnderdragonPreventPortal implements Listener {
         blocks.remove(block);
 
         // Drop egg
-        if (this.c.getCreateEgg())
+        if (c.getCreateEgg())
           entity.getWorld().dropItemNaturally(
               entity.getLocation(), new ItemStack(Material.DRAGON_EGG));
       }
