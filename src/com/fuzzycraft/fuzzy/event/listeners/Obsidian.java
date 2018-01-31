@@ -28,7 +28,7 @@ public class Obsidian implements Listener {
     final Block block = event.getBlock();
 
     if (block.getType() == Material.OBSIDIAN &&
-        Management.isEventActive(block.getWorld())) {
+        Management.isActive(block.getWorld())) {
       list.add(block.getLocation());
 
       ConfigTree ct = new ConfigTree(this.plugin);

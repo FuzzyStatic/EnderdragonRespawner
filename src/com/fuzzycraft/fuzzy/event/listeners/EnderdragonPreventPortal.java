@@ -1,8 +1,8 @@
 /*
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-28 21:26:09
- * @Last Modified by:   FuzzyStatic
- * @Last Modified time: 2018-01-28 21:26:09
+ * @Last Modified by: FuzzyStatic
+ * @Last Modified time: 2018-01-30 21:29:34
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
@@ -37,7 +37,7 @@ public class EnderdragonPreventPortal implements Listener {
     final Entity entity = event.getEntity();
     final World w = entity.getWorld();
 
-    if (!Management.isEventActive(w)) {
+    if (!Management.isActive(w)) {
       return;
     }
 

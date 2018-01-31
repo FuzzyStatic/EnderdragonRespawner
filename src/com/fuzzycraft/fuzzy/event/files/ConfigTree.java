@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-29 17:17:48
+ * @Last Modified time: 2018-01-30 22:26:57
  */
 
 package com.fuzzycraft.fuzzy.event.files;
@@ -67,10 +67,10 @@ public class ConfigTree {
   }
 
   private void createWorldDirectories() throws IOException {
-    for (World world : this.plugin.getServer().getWorlds()) {
+    for (World w : this.plugin.getServer().getWorlds()) {
       File worldDirectory =
           new File(getWorldsDirectory().toString() + File.separator +
-                   world.getName() + File.separator);
+                   w.getName() + File.separator);
 
       if (!worldDirectory.exists()) {
         this.plugin.getLogger().log(Level.INFO, "Creating World Directory " +
@@ -126,8 +126,6 @@ public class ConfigTree {
                            w.getName() + File.separator + Name.YML_CONFIG);
 
       if (!file.exists()) {
-        this.plugin.getLogger().log(
-            Level.INFO, "Creating Default Configuration for " + w.getName());
         Config c = new Config(plugin, w);
         c.createWorldDefConfig();
       }

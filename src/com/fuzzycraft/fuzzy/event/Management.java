@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.s.getConfig()om)
  * @Date: 2018-01-20 17:06:03
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-29 17:04:08
+ * @Last Modified time: 2018-01-30 22:47:07
  */
 
 package com.fuzzycraft.fuzzy.event;
@@ -10,10 +10,11 @@ package com.fuzzycraft.fuzzy.event;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
+
 import com.fuzzycraft.fuzzy.event.files.Config;
 import com.fuzzycraft.fuzzy.event.listeners.EnderCrystals;
 import com.fuzzycraft.fuzzy.event.listeners.Obsidian;
-import org.bukkit.ChatColor;
+
 import org.bukkit.World;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
@@ -23,7 +24,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Management {
   private static HashMap<World, Structure> eventMap;
 
-  public Management() { eventMap = new HashMap<World, Structure>(); }
+  private JavaPlugin plugin;
+
+  public Management(JavaPlugin plugin) {
+    this.plugin = plugin;
+    eventMap = new HashMap<World, Structure>();
+
+    for (World w : this.plugin.getServer().getWorlds()) {
+      add(this.plugin, w);
+    }
+  }
+
+  public static HashMap<World, Structure> getEventMap() { return eventMap; }
 
   // Spawn the number of Enderdragons required for this event
   public static int spawnEnderdragons(JavaPlugin plugin, World w) {
@@ -35,8 +47,7 @@ public class Management {
       added++;
     }
 
-    plugin.getServer().broadcastMessage(ChatColor.DARK_RED +
-                                        s.getConfig().getMsg());
+    plugin.getServer().broadcastMessage(s.getConfig().getMsg());
 
     return added;
   }
@@ -55,9 +66,7 @@ public class Management {
     return removed;
   }
 
-  public static HashMap<World, Structure> getEventMap() { return eventMap; }
-
-  public static boolean isEventActive(World w) {
+  public static boolean isActive(World w) {
     return Management.getEventMap().containsKey(w);
   }
 
@@ -102,9 +111,6 @@ public class Management {
         e.printStackTrace();
       }
     }
-
-    // Remove event from map
-    eventMap.remove(w);
 
     return removed;
   }

@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:11:30
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-29 15:54:07
+ * @Last Modified time: 2018-01-30 21:29:27
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
@@ -33,7 +33,7 @@ public class EnderdragonSpawnTimer implements Listener {
     final Entity entity = event.getEntity();
     final World w = entity.getWorld();
 
-    if (!Management.isEventActive(w)) {
+    if (!Management.isActive(w)) {
       return;
     }
 

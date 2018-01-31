@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:10:39
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-29 17:17:49
+ * @Last Modified time: 2018-01-30 21:29:23
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
@@ -44,7 +44,7 @@ public class EnderCrystals implements Listener {
     final Entity entity = event.getEntity();
 
     if (entity instanceof EnderCrystal &&
-        Management.isEventActive(entity.getWorld())) {
+        Management.isActive(entity.getWorld())) {
       list.add(entity.getLocation());
 
       ConfigTree ct = new ConfigTree(this.plugin);

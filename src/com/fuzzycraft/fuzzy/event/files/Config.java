@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-29 16:55:46
+ * @Last Modified time: 2018-01-30 22:47:38
  */
 
 package com.fuzzycraft.fuzzy.event.files;
