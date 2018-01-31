@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 22:26:57
+ * @Last Modified time: 2018-01-30 23:12:00
  */
 
 package com.fuzzycraft.fuzzy.event.files;
@@ -133,19 +133,19 @@ public class ConfigTree {
   }
 
   public void setDefaults(ConfigAccessor ca) {
-    FileConfiguration c = ca.getConfig();
-    c.set(Path.ACTIVE, Parameter.ACTIVE);
-    c.set(Path.SPAWNLOCATION,
-          new SerializableVector(
-              new Vector(Parameter.X, Parameter.Y, Parameter.Z))
-              .serialize());
-    c.set(Path.AMOUNT, Parameter.AMOUNT);
-    c.set(Path.TIME, Parameter.TIME);
-    c.set(Path.MSG, Parameter.MSG);
-    c.set(Path.RESPAWN_CRYSTALS, Parameter.RESPAWN_CRYSTALS);
-    c.set(Path.RESPAWN_OBSIDIAN, Parameter.RESPAWN_OBSIDIAN);
-    c.set(Path.CREATE_PORTAL, Parameter.CREATE_PORTAL);
-    c.set(Path.CREATE_EGG, Parameter.CREATE_EGG);
+    FileConfiguration fc = ca.getConfig();
+    fc.set(Path.ACTIVE, Parameter.ACTIVE);
+    fc.set(Path.SPAWNLOCATION,
+           new SerializableVector(
+               new Vector(Parameter.X, Parameter.Y, Parameter.Z))
+               .serialize());
+    fc.set(Path.AMOUNT, Parameter.AMOUNT);
+    fc.set(Path.TIME, Parameter.TIME);
+    fc.set(Path.MSG, Parameter.MSG);
+    fc.set(Path.RESPAWN_CRYSTALS, Parameter.RESPAWN_CRYSTALS);
+    fc.set(Path.RESPAWN_OBSIDIAN, Parameter.RESPAWN_OBSIDIAN);
+    fc.set(Path.CREATE_PORTAL, Parameter.CREATE_PORTAL);
+    fc.set(Path.CREATE_EGG, Parameter.CREATE_EGG);
     ca.saveConfig();
   }
 }

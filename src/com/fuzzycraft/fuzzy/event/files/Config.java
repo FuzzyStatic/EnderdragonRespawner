@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 22:47:38
+ * @Last Modified time: 2018-01-30 23:51:35
  */
 
 package com.fuzzycraft.fuzzy.event.files;
@@ -23,45 +23,53 @@ import org.bukkit.util.Vector;
 public class Config extends ConfigTree {
   private JavaPlugin plugin;
   private World w;
-  private FileConfiguration c;
+  private ConfigAccessor ca;
+  private FileConfiguration fc;
 
   public Config(JavaPlugin plugin, World w) {
     super(plugin);
     this.plugin = plugin;
     this.w = w;
-    this.c = new ConfigAccessor(this.plugin, getWorldConfigPath(w)).getConfig();
+    this.ca = new ConfigAccessor(this.plugin, getWorldConfigPath(w));
+    this.fc = ca.getConfig();
   }
 
   public World getWorld() { return this.w; }
 
-  public boolean getActive() { return this.c.getBoolean(Path.ACTIVE); }
+  public boolean getActive() { return this.fc.getBoolean(Path.ACTIVE); }
 
   public Location getLocation() {
-    YamlVector yv = new YamlVector(this.c, Path.SPAWNLOCATION);
+    YamlVector yv = new YamlVector(this.fc, Path.SPAWNLOCATION);
     SerializableVector sv = new SerializableVector(yv.getVectorMap());
     Vector vector = sv.getVector();
     return new Location(this.w, vector.getX(), vector.getY(), vector.getZ());
   }
 
-  public int getAmount() { return this.c.getInt(Path.AMOUNT); }
+  public int getAmount() { return this.fc.getInt(Path.AMOUNT); }
 
-  public int getTime() { return this.c.getInt(Path.TIME); }
+  public int getTime() { return this.fc.getInt(Path.TIME); }
 
-  public String getMsg() { return this.c.getString(Path.MSG); }
+  public String getMsg() { return this.fc.getString(Path.MSG); }
 
   public boolean getRespawnCrystals() {
-    return this.c.getBoolean(Path.RESPAWN_CRYSTALS);
+    return this.fc.getBoolean(Path.RESPAWN_CRYSTALS);
   }
 
   public boolean getRespawnObsidian() {
-    return this.c.getBoolean(Path.RESPAWN_OBSIDIAN);
+    return this.fc.getBoolean(Path.RESPAWN_OBSIDIAN);
   }
 
   public boolean getCreatePortal() {
-    return this.c.getBoolean(Path.CREATE_PORTAL);
+    return this.fc.getBoolean(Path.CREATE_PORTAL);
   }
 
-  public boolean getCreateEgg() { return this.c.getBoolean(Path.CREATE_EGG); }
+  public boolean getCreateEgg() { return this.fc.getBoolean(Path.CREATE_EGG); }
+
+  public void setActive(boolean active) {
+    FileConfiguration fc = ca.getConfig();
+    fc.set(Path.ACTIVE, active);
+    this.ca.saveConfig();
+  }
 
   public boolean createWorldDefConfig() {
     File f = new File(super.getWorldsDirectory().toString() + File.separator +

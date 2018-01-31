@@ -2,12 +2,13 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 16:57:18
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 22:36:08
+ * @Last Modified time: 2018-01-30 23:54:02
  */
 
 package com.fuzzycraft.fuzzy.event.command;
 
 import com.fuzzycraft.fuzzy.event.files.Config;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -106,6 +107,21 @@ public class Management implements CommandExecutor {
 
                 sender.sendMessage(
                     "Event not active. Activate with /er active <world> true");
+                break;
+              case "active":
+                if (args.length > 2) {
+                  switch (args[2]) {
+                  case "true":
+                    c.setActive(true);
+                    break;
+                  case "false":
+                    c.setActive(false);
+                    break;
+                  }
+                  break;
+                }
+
+                sender.sendMessage("Usage: /er active <world> [true|false]");
                 break;
               }
 
