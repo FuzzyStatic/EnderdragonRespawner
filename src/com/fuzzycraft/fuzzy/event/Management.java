@@ -47,7 +47,11 @@ public class Management {
       added++;
     }
 
-    plugin.getServer().broadcastMessage(s.getConfig().getMsg());
+    String msg = s.getConfig().getMsg();
+
+    if (!msg.isEmpty()) {
+      plugin.getServer().broadcastMessage(msg);
+    }
 
     return added;
   }
