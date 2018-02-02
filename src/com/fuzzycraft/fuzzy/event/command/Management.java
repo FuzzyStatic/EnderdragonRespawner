@@ -40,18 +40,7 @@ public class Management implements CommandExecutor {
               switch (args[0]) {
               case "start":
                 if (c.getActive()) {
-                  int added = com.fuzzycraft.fuzzy.event.Management.start(
-                      this.plugin, w);
-                  sender.sendMessage("New event for " + w.getName() +
-                                     " started");
-                  switch (added) {
-                  case 0:
-                    sender.sendMessage("No Enderdragons spawned");
-                    break;
-                  default:
-                    sender.sendMessage(added + " Enderdragons spawned");
-                    break;
-                  }
+                  this.start(sender, w);
                   break;
                 }
 
@@ -59,49 +48,13 @@ public class Management implements CommandExecutor {
                     "Event not active. Activate with /er active <world> true");
                 break;
               case "stop":
-                int removedStop =
-                    com.fuzzycraft.fuzzy.event.Management.stop(this.plugin, w);
-                sender.sendMessage("Previous event for " + w.getName() +
-                                   " stopped");
-                switch (removedStop) {
-                case 0:
-                  sender.sendMessage("No Enderdragons found/removed");
-                  break;
-                default:
-                  sender.sendMessage(removedStop +
-                                     " Enderdragons found/removed");
-                  break;
-                }
-
+                this.stop(sender, w);
                 break;
               case "restart":
-                int removedRestart =
-                    com.fuzzycraft.fuzzy.event.Management.stop(this.plugin, w);
-                sender.sendMessage("Previous event for " + w.getName() +
-                                   " stopped");
-                switch (removedRestart) {
-                case 0:
-                  sender.sendMessage("No Enderdragons found/removed");
-                  break;
-                default:
-                  sender.sendMessage(removedRestart +
-                                     " Enderdragons found/removed");
-                  break;
-                }
+                this.stop(sender, w);
 
                 if (c.getActive()) {
-                  int added = com.fuzzycraft.fuzzy.event.Management.start(
-                      this.plugin, w);
-                  sender.sendMessage("New event for " + w.getName() +
-                                     " started");
-                  switch (added) {
-                  case 0:
-                    sender.sendMessage("No Enderdragons spawned");
-                    break;
-                  default:
-                    sender.sendMessage(added + " Enderdragons spawned");
-                    break;
-                  }
+                  this.start(sender, w);
                   break;
                 }
 
@@ -139,5 +92,32 @@ public class Management implements CommandExecutor {
     }
 
     return false;
+  }
+
+  private void stop(CommandSender sender, World w) {
+    int removedStop =
+        com.fuzzycraft.fuzzy.event.Management.stop(this.plugin, w);
+    sender.sendMessage("Previous event for " + w.getName() + " stopped");
+    switch (removedStop) {
+    case 0:
+      sender.sendMessage("No Enderdragons found/removed");
+      break;
+    default:
+      sender.sendMessage(removedStop + " Enderdragons found/removed");
+      break;
+    }
+  }
+
+  private void start(CommandSender sender, World w) {
+    int added = com.fuzzycraft.fuzzy.event.Management.start(this.plugin, w);
+    sender.sendMessage("New event for " + w.getName() + " started");
+    switch (added) {
+    case 0:
+      sender.sendMessage("No Enderdragons spawned");
+      break;
+    default:
+      sender.sendMessage(added + " Enderdragons spawned");
+      break;
+    }
   }
 }
