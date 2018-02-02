@@ -80,11 +80,28 @@ public class Config extends ConfigTree {
           Level.INFO, "Creating default configuration for " + w.getName());
 
       ConfigAccessor ca = new ConfigAccessor(this.plugin, f.toString());
-      super.setDefaults(ca);
+      setDefaults(ca);
 
       return true;
     }
 
     return false;
+  }
+
+  public void setDefaults(ConfigAccessor ca) {
+    FileConfiguration fc = ca.getConfig();
+    fc.set(Path.ACTIVE, Parameter.ACTIVE);
+    fc.set(Path.SPAWNLOCATION,
+           new SerializableVector(
+               new Vector(Parameter.X, Parameter.Y, Parameter.Z))
+               .serialize());
+    fc.set(Path.AMOUNT, Parameter.AMOUNT);
+    fc.set(Path.TIME, Parameter.TIME);
+    fc.set(Path.MSG, Parameter.MSG);
+    fc.set(Path.RESPAWN_CRYSTALS, Parameter.RESPAWN_CRYSTALS);
+    fc.set(Path.RESPAWN_OBSIDIAN, Parameter.RESPAWN_OBSIDIAN);
+    fc.set(Path.CREATE_PORTAL, Parameter.CREATE_PORTAL);
+    fc.set(Path.CREATE_EGG, Parameter.CREATE_EGG);
+    ca.saveConfig();
   }
 }

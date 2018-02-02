@@ -11,13 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import com.fuzzycraft.fuzzy.utilities.ConfigAccessor;
-import com.fuzzycraft.fuzzy.utilities.SerializableVector;
-
 import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
 public class ConfigTree {
   private JavaPlugin plugin;
@@ -130,22 +125,5 @@ public class ConfigTree {
         c.createWorldDefConfig();
       }
     }
-  }
-
-  public void setDefaults(ConfigAccessor ca) {
-    FileConfiguration fc = ca.getConfig();
-    fc.set(Path.ACTIVE, Parameter.ACTIVE);
-    fc.set(Path.SPAWNLOCATION,
-           new SerializableVector(
-               new Vector(Parameter.X, Parameter.Y, Parameter.Z))
-               .serialize());
-    fc.set(Path.AMOUNT, Parameter.AMOUNT);
-    fc.set(Path.TIME, Parameter.TIME);
-    fc.set(Path.MSG, Parameter.MSG);
-    fc.set(Path.RESPAWN_CRYSTALS, Parameter.RESPAWN_CRYSTALS);
-    fc.set(Path.RESPAWN_OBSIDIAN, Parameter.RESPAWN_OBSIDIAN);
-    fc.set(Path.CREATE_PORTAL, Parameter.CREATE_PORTAL);
-    fc.set(Path.CREATE_EGG, Parameter.CREATE_EGG);
-    ca.saveConfig();
   }
 }
