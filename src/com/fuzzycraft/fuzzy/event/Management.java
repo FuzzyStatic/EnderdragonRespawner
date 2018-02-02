@@ -74,7 +74,7 @@ public class Management {
     if (!eventMap.containsKey(w)) {
       Config c = new Config(plugin, w);
       c.createWorldDefConfig();
-      Structure s = new Structure(null, c);
+      Structure s = new Structure(null, null, null, c);
       eventMap.put(w, s);
       return true;
     }
@@ -90,6 +90,9 @@ public class Management {
 
     Structure s = eventMap.get(w);
     Config c = s.getConfig();
+
+    // Cancel all tasks
+    s.cancelTasks();
 
     // Remove all Enderdragons
     int removed = removeAllEnderdragons(w);

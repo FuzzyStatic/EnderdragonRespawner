@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class EnderdragonSpawnTimer implements Listener {
   private JavaPlugin plugin;
@@ -48,7 +49,7 @@ public class EnderdragonSpawnTimer implements Listener {
       return;
     }
 
-    new BukkitRunnable() {
+    BukkitTask btec = new BukkitRunnable() {
       public void run() {
         try {
           EnderCrystals.respawn(plugin, w);
@@ -56,10 +57,10 @@ public class EnderdragonSpawnTimer implements Listener {
           e.printStackTrace();
         }
       }
-    }
-        .runTaskLater(this.plugin, c.getTime() * 20);
+    }.runTaskLater(this.plugin, c.getTime() * 20);
+    Management.getEventMap().get(w).setBukkitTaskEnderCrystals(btec);
 
-    new BukkitRunnable() {
+    BukkitTask bto = new BukkitRunnable() {
       public void run() {
         try {
           Obsidian.respawn(plugin, w);
@@ -67,14 +68,14 @@ public class EnderdragonSpawnTimer implements Listener {
           e.printStackTrace();
         }
       }
-    }
-        .runTaskLater(this.plugin, c.getTime() * 20);
+    }.runTaskLater(this.plugin, c.getTime() * 20);
+    Management.getEventMap().get(w).setBukkitObsidian(bto);
 
     // Create the task anonymously to spawn Enderdragon and schedule to run it
     // once after specified time.
-    new BukkitRunnable() {
+    BukkitTask btse = new BukkitRunnable() {
       public void run() { Management.spawnEnderdragons(plugin, w); }
-    }
-        .runTaskLater(this.plugin, c.getTime() * 20);
+    }.runTaskLater(this.plugin, c.getTime() * 20);
+    Management.getEventMap().get(w).setBukkitTaskSpawnEnderdragons(btse);
   }
 }
