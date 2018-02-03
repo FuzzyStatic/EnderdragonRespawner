@@ -1,8 +1,8 @@
 /*
- * @Author: Allen Flickinger (allen.flickinger@gmail.s.getConfig()om)
+ * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 17:06:03
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 22:47:07
+ * @Last Modified time: 2018-02-02 22:00:22
  */
 
 package com.fuzzycraft.fuzzy.event;
@@ -43,7 +43,9 @@ public class Management {
     int added = 0;
 
     for (int i = 0; i < s.getConfig().getAmount(); i++) {
-      w.spawnEntity(s.getConfig().getLocation(), EntityType.ENDER_DRAGON);
+      EnderDragon dragon = (EnderDragon)w.spawnEntity(
+          s.getConfig().getLocation(), EntityType.ENDER_DRAGON);
+      dragon.setPhase(EnderDragon.Phase.SEARCH_FOR_BREATH_ATTACK_TARGET);
       added++;
     }
 
@@ -62,7 +64,9 @@ public class Management {
 
     for (Entity entity : w.getEntities()) {
       if (entity instanceof EnderDragon && !entity.isDead()) {
-        entity.remove();
+        EnderDragon dragon = (EnderDragon)entity;
+        dragon.setPhase(EnderDragon.Phase.DYING);
+        dragon.setHealth(0.0);
         removed++;
       }
     }
