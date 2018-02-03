@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 21:02:33
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-02-03 09:25:30
+ * @Last Modified time: 2018-02-03 10:24:39
  */
 
 package com.fuzzycraft.fuzzy;
@@ -10,6 +10,7 @@ package com.fuzzycraft.fuzzy;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import com.fuzzycraft.fuzzy.event.Management;
@@ -80,8 +81,8 @@ public class EnderdragonRespawner extends JavaPlugin {
 
           if (c.getActive() && (nextStartTime != Parameter.BEGINNING_OF_TIME &&
                                 nextStartTime != -1)) {
-            /* Looks like the event was already completed and is awaiting it's
-             * next start */
+            /* Looks like the event was already completed and is awaiting
+             * it's next start */
             plugin.getLogger().log(
                 Level.INFO, "Cleaning up previous event for " + w.getName());
             int removedRestart = Management.stop(plugin, w);
@@ -99,8 +100,8 @@ public class EnderdragonRespawner extends JavaPlugin {
             long now = Instant.now().toEpochMilli();
 
             if (nextStartTime < now) {
-              /* Looks like the server was offline when the next event should
-               * have started. Let's start event now */
+              /* Looks like the server was offline when the next event
+               * should have started. Let's start event now */
               plugin.getLogger().log(Level.INFO,
                                      "Starting event for " + w.getName());
               int added = Management.start(plugin, w);
@@ -114,16 +115,26 @@ public class EnderdragonRespawner extends JavaPlugin {
                 break;
               }
             } else {
-              /* Looks like the event still has time until it starts. Let's set
-               * the timer */
+              /* Looks like the event still has time until it starts. Let's
+               * set the timer */
               plugin.getLogger().log(Level.INFO,
                                      "Setting event timer for " + w.getName());
-              int time = (int)(nextStartTime - now);
+              int time =
+                  (int)TimeUnit.MILLISECONDS.toSeconds((nextStartTime - now));
               EnderdragonSpawnTimer.nextEvent(plugin, w, time);
             }
           } else {
-            plugin.getLogger().log(Level.INFO, "Event for " + w.getName() +
-                                                   " is already running");
+            switch ((int)nextStartTime) {
+            case 0:
+              plugin.getLogger().log(Level.INFO,
+                                     "It seems event for " + w.getName() +
+                                         " was never activated, ignoring");
+              break;
+            case -1:
+              plugin.getLogger().log(Level.INFO, "Event for " + w.getName() +
+                                                     " is already running");
+              break;
+            }
           }
         }
       }
