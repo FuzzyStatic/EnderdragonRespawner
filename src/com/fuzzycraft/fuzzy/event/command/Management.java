@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 16:57:18
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 23:54:02
+ * @Last Modified time: 2018-02-02 20:34:57
  */
 
 package com.fuzzycraft.fuzzy.event.command;
@@ -38,7 +38,7 @@ public class Management implements CommandExecutor {
                              .getConfig();
 
               switch (args[0]) {
-              case "start":
+              /*case "start":
                 if (c.getActive()) {
                   this.start(sender, w);
                   break;
@@ -46,7 +46,7 @@ public class Management implements CommandExecutor {
 
                 sender.sendMessage(
                     "Event not active. Activate with /er active <world> true");
-                break;
+                break;*/
               case "stop":
                 this.stop(sender, w);
                 break;
@@ -85,7 +85,7 @@ public class Management implements CommandExecutor {
             return true;
           }
 
-          sender.sendMessage("Usage: /er [start|stop|restart] <world>");
+          sender.sendMessage("Usage: /er [restart|stop] <world>");
           return true;
         }
       }

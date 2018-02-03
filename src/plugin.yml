@@ -6,7 +6,7 @@ commands:
         description: Manage Enderdragon Respawner Events
         permission: enderdragonrespawner
         usage: |
-            er [start|stop|restart] <world>
+            er [restart|stop] <world>
 permissions:
     enderdragonrespawner:
         description: Let's a player manage any Enderdragon Respawner events
