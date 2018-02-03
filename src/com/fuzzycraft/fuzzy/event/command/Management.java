@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 16:57:18
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-02-02 20:34:57
+ * @Last Modified time: 2018-02-03 10:04:57
  */
 
 package com.fuzzycraft.fuzzy.event.command;
@@ -66,15 +66,26 @@ public class Management implements CommandExecutor {
                   switch (args[2]) {
                   case "true":
                     c.setActive(true);
+                    sender.sendMessage("Event for " + w.getName() +
+                                       " activated");
+                    sender.sendMessage(
+                        "Make sure to run /er restart <world> to start event");
                     break;
                   case "false":
                     c.setActive(false);
+                    sender.sendMessage("Event for " + w.getName() +
+                                       " deactivated");
+                    sender.sendMessage(
+                        "Make sure to run /er stop <world> to stop event completely");
                     break;
                   }
                   break;
                 }
 
                 sender.sendMessage("Usage: /er active <world> [true|false]");
+                break;
+              default:
+                sender.sendMessage("Usage: /er [restart|stop] <world>");
                 break;
               }
 
