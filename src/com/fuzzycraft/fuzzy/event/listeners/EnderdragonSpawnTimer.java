@@ -2,12 +2,15 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:11:30
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 21:29:27
+ * @Last Modified time: 2018-02-03 09:17:34
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import com.fuzzycraft.fuzzy.event.Management;
 import com.fuzzycraft.fuzzy.event.Structure;
@@ -38,16 +41,17 @@ public class EnderdragonSpawnTimer implements Listener {
       return;
     }
 
-    final Structure s = Management.getEventMap().get(w);
-    final Config c = s.getConfig();
-
     if (!(entity instanceof EnderDragon)) {
       return;
     }
 
-    if (!(event.getEntity() instanceof EnderDragon) || entity.isDead()) {
-      return;
-    }
+    nextEvent(this.plugin, w,
+              Management.getEventMap().get(w).getConfig().getTime());
+  }
+
+  public static void nextEvent(JavaPlugin plugin, World w, int time) {
+    final Structure s = Management.getEventMap().get(w);
+    final Config c = s.getConfig();
 
     BukkitTask btec = new BukkitRunnable() {
       public void run() {
@@ -57,7 +61,7 @@ public class EnderdragonSpawnTimer implements Listener {
           e.printStackTrace();
         }
       }
-    }.runTaskLater(this.plugin, c.getTime() * 20);
+    }.runTaskLater(plugin, time * 20);
     Management.getEventMap().get(w).setBukkitTaskEnderCrystals(btec);
 
     BukkitTask bto = new BukkitRunnable() {
@@ -68,14 +72,21 @@ public class EnderdragonSpawnTimer implements Listener {
           e.printStackTrace();
         }
       }
-    }.runTaskLater(this.plugin, c.getTime() * 20);
+    }.runTaskLater(plugin, time * 20);
     Management.getEventMap().get(w).setBukkitObsidian(bto);
 
     // Create the task anonymously to spawn Enderdragon and schedule to run it
     // once after specified time.
     BukkitTask btse = new BukkitRunnable() {
-      public void run() { Management.spawnEnderdragons(plugin, w); }
-    }.runTaskLater(this.plugin, c.getTime() * 20);
+      public void run() {
+        Management.spawnEnderdragons(plugin, w);
+        c.setNextStartTime(-1);
+      }
+    }.runTaskLater(plugin, time * 20);
+    plugin.getLogger().log(Level.INFO, "Next event for " + w.getName() +
+                                           " in " + time + " seconds");
+    c.setNextStartTime(Instant.now().toEpochMilli() +
+                       TimeUnit.SECONDS.toSeconds(time));
     Management.getEventMap().get(w).setBukkitTaskSpawnEnderdragons(btse);
   }
 }

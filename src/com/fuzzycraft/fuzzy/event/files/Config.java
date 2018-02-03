@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 23:51:35
+ * @Last Modified time: 2018-02-03 08:32:10
  */
 
 package com.fuzzycraft.fuzzy.event.files;
@@ -65,9 +65,19 @@ public class Config extends ConfigTree {
 
   public boolean getCreateEgg() { return this.fc.getBoolean(Path.CREATE_EGG); }
 
+  public long getNextStartTime() {
+    return this.fc.getLong(Path.NEXT_START_TIME);
+  }
+
   public void setActive(boolean active) {
     FileConfiguration fc = ca.getConfig();
     fc.set(Path.ACTIVE, active);
+    this.ca.saveConfig();
+  }
+
+  public void setNextStartTime(long time) {
+    FileConfiguration fc = ca.getConfig();
+    fc.set(Path.NEXT_START_TIME, time);
     this.ca.saveConfig();
   }
 
@@ -102,6 +112,7 @@ public class Config extends ConfigTree {
     fc.set(Path.RESPAWN_OBSIDIAN, Parameter.RESPAWN_OBSIDIAN);
     fc.set(Path.CREATE_PORTAL, Parameter.CREATE_PORTAL);
     fc.set(Path.CREATE_EGG, Parameter.CREATE_EGG);
+    fc.set(Path.NEXT_START_TIME, Parameter.BEGINNING_OF_TIME);
     ca.saveConfig();
   }
 }

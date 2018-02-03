@@ -2,23 +2,27 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 21:02:33
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 22:33:35
+ * @Last Modified time: 2018-02-03 09:25:30
  */
 
 package com.fuzzycraft.fuzzy;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import com.fuzzycraft.fuzzy.event.Management;
 import com.fuzzycraft.fuzzy.event.Structure;
 import com.fuzzycraft.fuzzy.event.command.Arg;
+import com.fuzzycraft.fuzzy.event.files.Config;
 import com.fuzzycraft.fuzzy.event.files.ConfigTree;
+import com.fuzzycraft.fuzzy.event.files.Parameter;
 import com.fuzzycraft.fuzzy.event.listeners.EnderCrystals;
 import com.fuzzycraft.fuzzy.event.listeners.EnderdragonPreventPortal;
 import com.fuzzycraft.fuzzy.event.listeners.EnderdragonSpawnTimer;
 import com.fuzzycraft.fuzzy.event.listeners.Obsidian;
+
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -71,9 +75,13 @@ public class EnderdragonRespawner extends JavaPlugin {
         for (Entry<World, Structure> e : Management.getEventMap().entrySet()) {
           World w = e.getKey();
           Structure s = e.getValue();
+          Config c = s.getConfig();
+          long nextStartTime = c.getNextStartTime();
 
-          if (s.getConfig().getActive()) {
-            // Clean up event
+          if (c.getActive() && (nextStartTime != Parameter.BEGINNING_OF_TIME &&
+                                nextStartTime != -1)) {
+            /* Looks like the event was already completed and is awaiting it's
+             * next start */
             plugin.getLogger().log(
                 Level.INFO, "Cleaning up previous event for " + w.getName());
             int removedRestart = Management.stop(plugin, w);
@@ -88,20 +96,34 @@ public class EnderdragonRespawner extends JavaPlugin {
               break;
             }
 
-            // Start event
-            plugin.getLogger().log(Level.INFO, "Starting event for " +
-                                                   w.getName() + " started");
-            int added = Management.start(plugin, w);
-            switch (added) {
-            case 0:
-              plugin.getLogger().log(Level.INFO, "No Enderdragons spawned");
-              break;
-            default:
+            long now = Instant.now().toEpochMilli();
+
+            if (nextStartTime < now) {
+              /* Looks like the server was offline when the next event should
+               * have started. Let's start event now */
               plugin.getLogger().log(Level.INFO,
-                                     added + " Enderdragons spawned");
-              break;
+                                     "Starting event for " + w.getName());
+              int added = Management.start(plugin, w);
+              switch (added) {
+              case 0:
+                plugin.getLogger().log(Level.INFO, "No Enderdragons spawned");
+                break;
+              default:
+                plugin.getLogger().log(Level.INFO,
+                                       added + " Enderdragons spawned");
+                break;
+              }
+            } else {
+              /* Looks like the event still has time until it starts. Let's set
+               * the timer */
+              plugin.getLogger().log(Level.INFO,
+                                     "Setting event timer for " + w.getName());
+              int time = (int)(nextStartTime - now);
+              EnderdragonSpawnTimer.nextEvent(plugin, w, time);
             }
-            break;
+          } else {
+            plugin.getLogger().log(Level.INFO, "Event for " + w.getName() +
+                                                   " is already running");
           }
         }
       }
