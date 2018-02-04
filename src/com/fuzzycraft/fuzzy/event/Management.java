@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 17:06:03
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-02-03 18:46:25
+ * @Last Modified time: 2018-02-03 21:51:06
  */
 
 package com.fuzzycraft.fuzzy.event;
@@ -71,6 +71,16 @@ public class Management {
     }
 
     return removed;
+  }
+
+  public static boolean exists(World w) {
+    for (Entity entity : w.getEntities()) {
+      if (entity instanceof EnderDragon && !entity.isDead()) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public static boolean isActive(World w) {

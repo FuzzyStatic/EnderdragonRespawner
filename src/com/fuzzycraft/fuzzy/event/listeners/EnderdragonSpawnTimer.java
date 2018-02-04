@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:11:30
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-02-03 18:44:16
+ * @Last Modified time: 2018-02-03 21:50:45
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
@@ -40,7 +40,7 @@ public class EnderdragonSpawnTimer implements Listener {
       return;
     }
 
-    if (!(entity instanceof EnderDragon)) {
+    if (!(entity instanceof EnderDragon) || Management.exists(w)) {
       return;
     }
 
