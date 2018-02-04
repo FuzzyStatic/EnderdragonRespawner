@@ -18,12 +18,23 @@ respawn:
   obsidian: false
 createPortal: false
 createEgg: true
+nextEventStartTime: 0 // Used to maintain the event timer if/when a server shutdowns
 ```
 
-## For these Release
-* Data Persistence (Obsidian/Enderdragon Crystals)
-* Activate Command
+Commands/Permissions
+
+```yaml
+commands:
+    er:
+        description: Manage Enderdragon Respawner Events
+        permission: enderdragonrespawner
+        usage: |
+            er [restart|stop] <world>
+permissions:
+    enderdragonrespawner:
+        description: Let's a player manage any Enderdragon Respawner events
+        default: op
+```
 
 ## TODO
-* More Commands
 * Alter Enderdragon Flight Zone
