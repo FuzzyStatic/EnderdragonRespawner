@@ -2,12 +2,11 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:11:30
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-02-03 10:02:05
+ * @Last Modified time: 2018-02-03 18:44:16
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -54,24 +53,12 @@ public class EnderdragonSpawnTimer implements Listener {
     final Config c = s.getConfig();
 
     BukkitTask btec = new BukkitRunnable() {
-      public void run() {
-        try {
-          EnderCrystals.respawn(plugin, w);
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
+      public void run() { EnderCrystals.respawn(plugin, w); }
     }.runTaskLater(plugin, time * 20);
     Management.getEventMap().get(w).setBukkitTaskEnderCrystals(btec);
 
     BukkitTask bto = new BukkitRunnable() {
-      public void run() {
-        try {
-          Obsidian.respawn(plugin, w);
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
+      public void run() { Obsidian.respawn(plugin, w); }
     }.runTaskLater(plugin, time * 20);
     Management.getEventMap().get(w).setBukkitObsidian(bto);
 

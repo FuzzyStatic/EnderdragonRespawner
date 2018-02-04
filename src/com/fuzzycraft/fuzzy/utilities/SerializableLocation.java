@@ -1,3 +1,10 @@
+/*
+ * @Author: Allen Flickinger (allen.flickinger@gmail.com)
+ * @Date: 2018-02-03 18:39:20
+ * @Last Modified by: FuzzyStatic
+ * @Last Modified time: 2018-02-03 20:52:52
+ */
+
 package com.fuzzycraft.fuzzy.utilities;
 
 import java.util.HashMap;
@@ -7,12 +14,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * @author Allen Flickinger (allen.flickinger@gmail.com)
- */
-
-@Deprecated
 public class SerializableLocation implements ConfigurationSerializable {
 
   private final World world;
@@ -56,6 +59,39 @@ public class SerializableLocation implements ConfigurationSerializable {
     map.put("pitch", Float.floatToIntBits(this.location.getPitch()));
     map.put("yaw", Float.floatToIntBits(this.location.getYaw()));
     return map;
+  }
+
+  public String serializeString() {
+    StringBuilder s = new StringBuilder();
+    s.append(this.location.getWorld().getName());
+    s.append(",");
+    s.append(this.location.getX());
+    s.append(",");
+    s.append(this.location.getY());
+    s.append(",");
+    s.append(this.location.getZ());
+    s.append(",");
+    s.append(Float.floatToIntBits(this.location.getPitch()));
+    s.append(",");
+    s.append(Float.floatToIntBits(this.location.getYaw()));
+    return s.toString();
+  }
+
+  public static Location deserializeString(JavaPlugin plugin, String location) {
+    String[] arg = location.split(",");
+    double[] xyz = new double[3];
+    float[] pitchYaw = new float[2];
+
+    for (int i = 0; i < 3; i++) {
+      xyz[i] = Double.parseDouble(arg[i + 1]);
+    }
+
+    for (int i = 0; i < 2; i++) {
+      pitchYaw[i] = Float.parseFloat(arg[i + 1]);
+    }
+
+    return new Location(plugin.getServer().getWorld(arg[0]), xyz[0], xyz[1],
+                        xyz[2], pitchYaw[0], pitchYaw[1]);
   }
 
   public Location getLocation() { return this.location; }

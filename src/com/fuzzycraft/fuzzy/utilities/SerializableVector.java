@@ -1,3 +1,10 @@
+/*
+ * @Author: Allen Flickinger (allen.flickinger@gmail.com)
+ * @Date: 2018-02-03 18:39:41
+ * @Last Modified by:   FuzzyStatic
+ * @Last Modified time: 2018-02-03 18:39:41
+ */
+
 package com.fuzzycraft.fuzzy.utilities;
 
 import java.util.HashMap;
@@ -5,10 +12,6 @@ import java.util.Map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.util.Vector;
-
-/**
- * @author Allen Flickinger (allen.flickinger@gmail.com)
- */
 
 public class SerializableVector implements ConfigurationSerializable {
 

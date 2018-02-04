@@ -1,3 +1,10 @@
+/*
+ * @Author: Allen Flickinger (allen.flickinger@gmail.com)
+ * @Date: 2018-02-03 21:00:41
+ * @Last Modified by:   FuzzyStatic
+ * @Last Modified time: 2018-02-03 21:00:41
+ */
+
 package com.fuzzycraft.fuzzy.utilities;
 
 import java.io.File;

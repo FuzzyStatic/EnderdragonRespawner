@@ -2,12 +2,11 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 17:06:03
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-02-02 22:00:22
+ * @Last Modified time: 2018-02-03 18:46:25
  */
 
 package com.fuzzycraft.fuzzy.event;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
 
@@ -107,20 +106,12 @@ public class Management {
 
     // Respawn any crystals
     if (c.getRespawnCrystals()) {
-      try {
-        EnderCrystals.respawn(plugin, w);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      EnderCrystals.respawn(plugin, w);
     }
 
     // Respawn obsidian
     if (c.getRespawnObsidian()) {
-      try {
-        Obsidian.respawn(plugin, w);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      Obsidian.respawn(plugin, w);
     }
 
     return removed;

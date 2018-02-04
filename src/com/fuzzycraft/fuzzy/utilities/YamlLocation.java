@@ -1,13 +1,16 @@
+/*
+ * @Author: Allen Flickinger (allen.flickinger@gmail.com)
+ * @Date: 2018-02-03 18:39:51
+ * @Last Modified by:   FuzzyStatic
+ * @Last Modified time: 2018-02-03 18:39:51
+ */
+
 package com.fuzzycraft.fuzzy.utilities;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.configuration.file.FileConfiguration;
-
-/**
- * @author Allen Flickinger (allen.flickinger@gmail.com)
- */
 
 @Deprecated
 public class YamlLocation {

@@ -2,15 +2,18 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-20 18:08:07
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 23:12:00
+ * @Last Modified time: 2018-02-03 20:53:26
  */
 
 package com.fuzzycraft.fuzzy.event.files;
 
+import com.fuzzycraft.fuzzy.utilities.SerializableLocation;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
-
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -103,6 +106,63 @@ public class ConfigTree {
             Level.INFO, "Creating Obsidian Data File for " + worldDirectory +
                             ": " + obsidianFile.createNewFile());
       }
+    }
+  }
+
+  public static String createCrystalDataFile(JavaPlugin plugin, World w) {
+    ConfigTree ct = new ConfigTree(plugin);
+    String filename = ct.getWorldsDirectory().toString() + File.separator +
+                      w.getName() + File.separator + Name.DIR_DATA +
+                      File.separator + Name.DAT_CRYSTAL;
+    File f = new File(filename);
+
+    if (!f.exists()) {
+      try {
+        f.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return filename;
+  }
+
+  public static String createObsidianDataFile(JavaPlugin plugin, World w) {
+    ConfigTree ct = new ConfigTree(plugin);
+    String filename = ct.getWorldsDirectory().toString() + File.separator +
+                      w.getName() + File.separator + Name.DIR_DATA +
+                      File.separator + Name.DAT_OBSIDIAN;
+    File f = new File(filename);
+
+    if (!f.exists()) {
+      try {
+        f.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return filename;
+  }
+
+  public static void addLocationToFile(String filename, Location location) {
+    BufferedWriter bw = null;
+
+    try {
+      bw = new BufferedWriter(new FileWriter(filename, true));
+      SerializableLocation sl = new SerializableLocation(location);
+      bw.write(sl.serializeString());
+      bw.newLine();
+      bw.flush();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (bw != null)
+        try {
+          bw.close();
+        } catch (IOException e2) {
+          e2.printStackTrace();
+        }
     }
   }
 

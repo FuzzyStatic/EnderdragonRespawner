@@ -1,12 +1,14 @@
 package com.fuzzycraft.fuzzy.event.listeners;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 import com.fuzzycraft.fuzzy.event.Management;
 import com.fuzzycraft.fuzzy.event.files.ConfigTree;
-import com.fuzzycraft.fuzzy.event.files.Name;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
+import com.fuzzycraft.fuzzy.utilities.SerializableLocation;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -19,53 +21,47 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Obsidian implements Listener {
   public JavaPlugin plugin;
-  private List<Location> list = new ArrayList<Location>();
 
   public Obsidian(JavaPlugin plugin) { this.plugin = plugin; }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
   public void onBlockBreak(BlockBreakEvent event) throws FileNotFoundException {
     final Block block = event.getBlock();
+    final World w = block.getWorld();
 
-    if (block.getType() == Material.OBSIDIAN &&
-        Management.isActive(block.getWorld())) {
-      list.add(block.getLocation());
-
-      ConfigTree ct = new ConfigTree(this.plugin);
-      String filename = ct.getWorldsDirectory().toString() + File.separator +
-                        block.getWorld().getName() + File.separator +
-                        Name.DIR_DATA + File.separator + Name.DAT_OBSIDIAN;
-
-      PrintWriter pw = new PrintWriter(new FileOutputStream(filename));
-      for (Location location : list)
-        pw.println(location);
-      pw.close();
+    if (block.getType() == Material.OBSIDIAN && Management.isActive(w)) {
+      add(plugin, w, block.getLocation());
     }
   }
 
-  public static void respawn(JavaPlugin plugin, World w) throws IOException {
-    ConfigTree ct = new ConfigTree(plugin);
-    String filename = ct.getWorldsDirectory().toString() + File.separator +
-                      w.getName() + File.separator + Name.DIR_DATA +
-                      File.separator + Name.DAT_CRYSTAL;
-    BufferedReader in = new BufferedReader(new FileReader(filename));
-    plugin.getLogger().log(Level.INFO, "Obsidian at: " + in.readLine());
+  public static void add(JavaPlugin plugin, World w, Location l) {
+    ConfigTree.addLocationToFile(ConfigTree.createObsidianDataFile(plugin, w),
+                                 l);
+  }
 
-    /*if (!this.list.isEmpty()) {
-      for (Location loc : this.list) {
-        Block block = loc.getBlock();
+  public static void respawn(JavaPlugin plugin, World w) {
+    String filename = ConfigTree.createObsidianDataFile(plugin, w);
+
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(filename));
+      String line;
+
+      while ((line = br.readLine()) != null) {
+        Location l = SerializableLocation.deserializeString(plugin, line);
+        Block b = l.getBlock();
 
         // Check if block is already obsidian.
-        if (block.getType() == Material.OBSIDIAN) {
+        if (b.getType() == Material.OBSIDIAN) {
           return;
         }
 
-        block.setType(Material.OBSIDIAN);
+        b.setType(Material.OBSIDIAN);
       }
-    }*/
 
-    in.close();
+      new File(filename).delete();
+      br.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
-
-  public List<Location> getLocations() { return this.list; }
 }
