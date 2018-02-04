@@ -3,7 +3,7 @@
     <groupId>com.fuzzycraft.fuzzy</groupId>
     <artifactId>java-archive</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.0</version>
+    <version>2.0.0rc1</version>
     <repositories>
         <repository>
             <id>spigot-repo</id>
