@@ -1,13 +1,40 @@
 # EnderdragonRespawner
 
-A minecraft plugin API (sans commands/configurations) that will respawn the Enderdragon in **world_the_end** every **6 hours** or upon server load if no Enderdragon exists in world_the_end. Also, prevents spawning of Enderdragon portal.
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/FuzzyStatic)
 
-## Releases
+A Minecraft plugin that will respawn the Enderdragon (or Enderdragons) on a time cycle.
 
-[v1.4] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.4/EnderdragonRespawner.jar) - Obsidian respawn
+```yaml
+active: true
+spawnLocation:
+  x: 0.0
+  y: 20.0
+  z: 0.0
+numberOfDragons: 1
+respawnTime: 60
+spawnAlert: The beast awakens from his slumber...
+respawn:
+  enderCrystals: true
+  obsidian: false
+createPortal: false
+createEgg: true
+nextEventStartTime: 0 // Used to maintain the event timer if/when a server shutdowns
+```
 
-[v1.3.2] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3.2/EnderdragonRespawner.jar) - Unknown world fix
+Commands/Permissions
 
-[v1.3.1] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3.1/EnderdragonRespawner.jar) - Location NPE on first load fix
+```yaml
+commands:
+    er:
+        description: Manage Enderdragon Respawner Events
+        permission: enderdragonrespawner
+        usage: |
+            er [restart|stop] <world>
+permissions:
+    enderdragonrespawner:
+        description: Let's a player manage any Enderdragon Respawner events
+        default: op
+```
 
-[v1.3] (https://github.com/FuzzyStatic/EnderdragonRespawner/releases/download/v1.3/EnderdragonRespawner.jar) - Enderdragon amount / Ender Crystal respawn
+## TODO
+* Alter Enderdragon Flight Zone

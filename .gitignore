@@ -1,3 +1,5 @@
-/bin
-/lib
 /target
+/.idea
+/.settings
+/.project
+*.iml

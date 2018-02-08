@@ -1,86 +1,161 @@
+/*
+ * @Author: Allen Flickinger (allen.flickinger@gmail.com)
+ * @Date: 2018-01-20 21:02:33
+ * @Last Modified by: FuzzyStatic
+ * @Last Modified time: 2018-02-03 10:24:39
+ */
+
 package com.fuzzycraft.fuzzy;
 
-import java.io.File;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
-import org.apache.commons.io.FilenameUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import com.fuzzycraft.fuzzy.event.Management;
+import com.fuzzycraft.fuzzy.event.Structure;
+import com.fuzzycraft.fuzzy.event.command.Arg;
+import com.fuzzycraft.fuzzy.event.files.Config;
+import com.fuzzycraft.fuzzy.event.files.ConfigTree;
+import com.fuzzycraft.fuzzy.event.files.Parameter;
+import com.fuzzycraft.fuzzy.event.listeners.EnderCrystals;
+import com.fuzzycraft.fuzzy.event.listeners.EnderdragonPreventPortal;
+import com.fuzzycraft.fuzzy.event.listeners.EnderdragonSpawnTimer;
+import com.fuzzycraft.fuzzy.event.listeners.Obsidian;
+
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import com.fuzzycraft.fuzzy.configurations.ConfigWorldParameters;
-import com.fuzzycraft.fuzzy.constants.Defaults;
-import com.fuzzycraft.fuzzy.constants.Paths;
-import com.fuzzycraft.fuzzy.listeners.EnderdragonCrystals;
-import com.fuzzycraft.fuzzy.listeners.EnderdragonPreventPortal;
-import com.fuzzycraft.fuzzy.listeners.EnderdragonSpawnTimer;
-import com.fuzzycraft.fuzzy.listeners.Obsidian;
-import com.fuzzycraft.fuzzy.utilities.DirectoryStructure;
-import com.fuzzycraft.fuzzy.utilities.SerializableLocation;
-import com.fuzzycraft.fuzzy.utilities.YamlLocation;
-
-/**
- * 
- * @author FuzzyStatic (fuzzy@fuzzycraft.com)
- *
- */
+import org.bukkit.scheduler.BukkitTask;
 
 public class EnderdragonRespawner extends JavaPlugin {
-	
-	public static EnderdragonSpawner es;
-	public static EnderdragonChecker ec;
-	
-	private EnderdragonRespawner plugin = this;
-	
-	private ConfigWorldParameters defaultConfig;
-	private DirectoryStructure ds;
-	private String defaultDirectory = Defaults.DIR_WORLDS;
-	private String defaultFilename = Defaults.WORLD + ".yml";
-	
-	private EnderdragonCrystals enderCrystals;
-	private Obsidian obsidian;
-	
-	public void onEnable() {
-		// Create defaults
-		this.ds = new DirectoryStructure(this, this.defaultDirectory);
-		this.ds.createDirectory();
-		this.defaultConfig = new ConfigWorldParameters(this, this.defaultDirectory, new File(this.defaultFilename));
-		this.defaultConfig.setDefaults();
-		
-		new BukkitRunnable() {
-        	
-			public void run() {
-				for (File file : ds.getDirectory().listFiles()) {
-					ConfigWorldParameters cwp = new ConfigWorldParameters(plugin, defaultDirectory, file);
-					
-					if (cwp.getLocation().getWorld() != null) {
-						SerializableLocation sc = new SerializableLocation(new YamlLocation(getConfig(), (Paths.LOCATION)).getLocationMap());
-						EnderdragonSpawner es = new EnderdragonSpawner(plugin, sc.getWorld(), sc.getLocation(), getConfig().getInt(Paths.AMOUNT), getConfig().getString(Paths.MSG));
-						EnderdragonChecker ec = new EnderdragonChecker(sc.getWorld());
-						PluginManager pm = getServer().getPluginManager();
-						
-						if (getConfig().getBoolean(Paths.RESPAWN_CRYSTALS)) {
-							EnderdragonCrystals enderCrystals = new EnderdragonCrystals(plugin, ec.getWorld());
-							pm.registerEvents(enderCrystals, plugin);
-						}
-						
-						if (getConfig().getBoolean(Paths.RESPAWN_OBSIDIAN)) {
-							Obsidian obsidian = new Obsidian(plugin, ec.getWorld());
-							pm.registerEvents(obsidian, plugin);
-						}
-						
-						pm.registerEvents(new EnderdragonSpawnTimer(plugin, enderCrystals, obsidian, getConfig().getInt(Paths.TIME)), plugin);
-						pm.registerEvents(new EnderdragonPreventPortal(plugin, ec.getWorld(), getConfig().getBoolean(Paths.CREATE_PORTAL), getConfig().getBoolean(Paths.CREATE_EGG)), plugin);
-					}
-				}
-			}
-			
-		}.runTaskLater(this, 1);
-	}
-	
-	public void onDisable() {
-	
-	}
+  private EnderdragonRespawner plugin = this;
+  private ConfigTree ct;
+  private BukkitTask bt;
+
+  public void onEnable() {
+    // Check directory structure
+    this.plugin.getLogger().log(Level.INFO, "Checking directory structure");
+
+    ct = new ConfigTree(this);
+
+    try {
+      ct.createDirectoryStructure();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    // Create default configurations
+    this.plugin.getLogger().log(
+        Level.INFO,
+        "Configurations only work if located in specific world directory within " +
+            ct.getWorldsDirectory().toString());
+    ct.createAllWorldsDefaultConfiguration();
+
+    // Initiate events
+    this.plugin.getLogger().log(Level.INFO, "Initializing events");
+    new Management(this.plugin);
+
+    // Set commands
+    getCommand(Arg.BASE).setExecutor(
+        new com.fuzzycraft.fuzzy.event.command.Management(this));
+
+    // Register listeners
+    this.plugin.getLogger().log(Level.INFO, "Registering listener events");
+    PluginManager pm = getServer().getPluginManager();
+    pm.registerEvents(new EnderCrystals(plugin), plugin);
+    pm.registerEvents(new Obsidian(plugin), plugin);
+    pm.registerEvents(new EnderdragonSpawnTimer(plugin), plugin);
+    pm.registerEvents(new EnderdragonPreventPortal(plugin), plugin);
+
+    this.bt = new BukkitRunnable() {
+      public void run() {
+        // Start events
+        for (Entry<World, Structure> e : Management.getEventMap().entrySet()) {
+          World w = e.getKey();
+          Structure s = e.getValue();
+          Config c = s.getConfig();
+          long nextStartTime = c.getNextStartTime();
+
+          if (c.getActive() && (nextStartTime != Parameter.BEGINNING_OF_TIME &&
+                                nextStartTime != -1)) {
+            /* Looks like the event was already completed and is awaiting
+             * it's next start */
+            plugin.getLogger().log(
+                Level.INFO, "Cleaning up previous event for " + w.getName());
+            int removedRestart = Management.stop(plugin, w);
+            switch (removedRestart) {
+            case 0:
+              plugin.getLogger().log(Level.INFO,
+                                     "No Enderdragons found/removed");
+              break;
+            default:
+              plugin.getLogger().log(
+                  Level.INFO, removedRestart + " Enderdragons found/removed");
+              break;
+            }
+
+            long now = Instant.now().toEpochMilli();
+
+            if (nextStartTime < now) {
+              /* Looks like the server was offline when the next event
+               * should have started. Let's start event now */
+              plugin.getLogger().log(Level.INFO,
+                                     "Starting event for " + w.getName());
+              int added = Management.start(plugin, w);
+              switch (added) {
+              case 0:
+                plugin.getLogger().log(Level.INFO, "No Enderdragons spawned");
+                break;
+              default:
+                plugin.getLogger().log(Level.INFO,
+                                       added + " Enderdragons spawned");
+                break;
+              }
+            } else {
+              /* Looks like the event still has time until it starts. Let's
+               * set the timer */
+              plugin.getLogger().log(Level.INFO,
+                                     "Setting event timer for " + w.getName());
+              int time =
+                  (int)TimeUnit.MILLISECONDS.toSeconds((nextStartTime - now));
+              EnderdragonSpawnTimer.nextEvent(plugin, w, time);
+            }
+          } else {
+            switch ((int)nextStartTime) {
+            case 0:
+              plugin.getLogger().log(Level.INFO,
+                                     "It seems event for " + w.getName() +
+                                         " was never activated, ignoring");
+              break;
+            case -1:
+              plugin.getLogger().log(Level.INFO, "Event for " + w.getName() +
+                                                     " is already running");
+              break;
+            }
+          }
+        }
+      }
+    }.runTaskLater(this, 1);
+  }
+
+  public void onDisable() {
+    // Cancel start up task
+    if (this.bt != null) {
+      this.bt.cancel();
+    }
+
+    // Cancel event tasks
+    for (Entry<World, Structure> e : Management.getEventMap().entrySet()) {
+      World w = e.getKey();
+      Structure s = e.getValue();
+
+      if (s.cancelTasks()) {
+        plugin.getLogger().log(Level.INFO,
+                               "Cancelled tasks for " + w.getName());
+      }
+    }
+  }
 }

@@ -1,45 +1,55 @@
 <project>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>localdomain.localhost.tutorial</groupId>
-	<artifactId>java-archive</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.fuzzycraft.fuzzy</groupId>
+    <artifactId>java-archive</artifactId>
     <packaging>jar</packaging>
-    <version>1.4</version>
-	<repositories>
+    <version>2.0.0rc1</version>
+    <repositories>
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
-	</repositories>
+    </repositories>
     <!--Spigot-API-->
-    <dependencies>	
-    	<dependency>
-    	    <groupId>org.spigotmc</groupId>
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-    		<version>1.8.7-R0.1-SNAPSHOT</version>
-    	</dependency>
-    	<!--Bukkit API-->
-    	<dependency>
-    	    <groupId>org.bukkit</groupId>
-    	    <artifactId>bukkit</artifactId>
-    	    <version>1.8.7-R0.1-SNAPSHOT</version>
-    	</dependency>
-    	<!-- http://mvnrepository.com/artifact/org.apache.commons/commons-io -->
-	<dependency>
-    		<groupId>org.apache.commons</groupId>
- 		<artifactId>commons-io</artifactId>
-    		<version>1.3.2</version>
-	</dependency>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+        </dependency>
+        <!--Bukkit API-->
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>EnderdragonRespawner</finalName>
-        <sourceDirectory>src/com/fuzzycraft/fuzzy</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+        <sourceDirectory>src</sourceDirectory>
         <resources>
-	        <resource>
-	            <directory>src</directory>
-	            <includes>
-	                <include>*.yml</include>
-	            </includes>
-	        </resource>
+            <resource>
+                <directory>src</directory>
+                <includes>
+                    <include>*.yml</include>
+                </includes>
+            </resource>
         </resources>
     </build>
 </project>
