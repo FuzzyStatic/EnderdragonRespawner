@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:10:39
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-02-03 20:54:55
+ * @Last Modified time: 2018-02-10 14:41:53
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
@@ -60,7 +60,10 @@ public class EnderCrystals implements Listener {
       while ((line = br.readLine()) != null) {
         Location l = SerializableLocation.deserializeString(plugin, line);
         Block b = l.getBlock();
-        b.setType(Material.AIR);
+        // Check if block is already air.
+        if (!(b.getType() == Material.AIR)) {
+          b.setType(Material.AIR);
+        }
         w.spawnEntity(l, EntityType.ENDER_CRYSTAL);
       }
 

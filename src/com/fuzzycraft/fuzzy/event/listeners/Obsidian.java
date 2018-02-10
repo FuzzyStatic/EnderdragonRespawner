@@ -51,11 +51,9 @@ public class Obsidian implements Listener {
         Block b = l.getBlock();
 
         // Check if block is already obsidian.
-        if (b.getType() == Material.OBSIDIAN) {
-          return;
+        if (!(b.getType() == Material.OBSIDIAN)) {
+          b.setType(Material.OBSIDIAN);
         }
-
-        b.setType(Material.OBSIDIAN);
       }
 
       new File(filename).delete();

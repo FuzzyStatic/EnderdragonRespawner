@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-18 10:11:30
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-02-03 21:50:45
+ * @Last Modified time: 2018-02-10 14:39:10
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
@@ -26,10 +26,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-public class EnderdragonSpawnTimer implements Listener {
+public class Timer implements Listener {
   private JavaPlugin plugin;
 
-  public EnderdragonSpawnTimer(JavaPlugin plugin) { this.plugin = plugin; }
+  public Timer(JavaPlugin plugin) { this.plugin = plugin; }
 
   @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
   public void onEntityDeath(EntityDeathEvent event) {
@@ -42,6 +42,12 @@ public class EnderdragonSpawnTimer implements Listener {
 
     if (!(entity instanceof EnderDragon) || Management.exists(w)) {
       return;
+    }
+
+    final Structure s = Management.getEventMap().get(w);
+    final Config c = s.getConfig();
+
+    if (c.getCreateEgg()) {
     }
 
     nextEvent(this.plugin, w,

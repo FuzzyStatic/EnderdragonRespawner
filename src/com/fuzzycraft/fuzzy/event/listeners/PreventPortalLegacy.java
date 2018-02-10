@@ -2,7 +2,7 @@
  * @Author: Allen Flickinger (allen.flickinger@gmail.com)
  * @Date: 2018-01-28 21:26:09
  * @Last Modified by: FuzzyStatic
- * @Last Modified time: 2018-01-30 21:29:34
+ * @Last Modified time: 2018-02-10 14:39:56
  */
 
 package com.fuzzycraft.fuzzy.event.listeners;
@@ -27,10 +27,11 @@ import org.bukkit.event.entity.EntityCreatePortalEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class EnderdragonPreventPortal implements Listener {
+@Deprecated
+public class PreventPortalLegacy implements Listener {
   private JavaPlugin plugin;
 
-  public EnderdragonPreventPortal(JavaPlugin plugin) { this.plugin = plugin; }
+  public PreventPortalLegacy(JavaPlugin plugin) { this.plugin = plugin; }
 
   @EventHandler(priority = EventPriority.HIGH)
   public void onEntityCreatePortal(EntityCreatePortalEvent event) {
